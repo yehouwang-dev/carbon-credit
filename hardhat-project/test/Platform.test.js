@@ -151,6 +151,7 @@ describe("Carbon Credit Platform contracts", function () {
   describe("CarbonCreditVault", function () {
     it("supports stake, partial repayment, and unstake", async function () {
       await mintProject();
+      await vault.setCollateralValue(1, ethers.parseUnits("10000"));
       const liquidity = ethers.parseUnits("10000");
       const loan = ethers.parseUnits("1000");
       await token.mint(await vault.getAddress(), liquidity, "Vault liquidity");
@@ -171,6 +172,7 @@ describe("Carbon Credit Platform contracts", function () {
 
     it("prevents another user from repaying or unstaking", async function () {
       await mintProject();
+      await vault.setCollateralValue(1, ethers.parseUnits("10000"));
       await token.mint(await vault.getAddress(), ethers.parseUnits("10000"), "Liquidity");
       await nft.connect(user).approve(await vault.getAddress(), 1);
       await vault.connect(user).stakeNFT(1, ethers.parseUnits("100"));
@@ -179,6 +181,7 @@ describe("Carbon Credit Platform contracts", function () {
 
     it("allows liquidation only after the loan duration", async function () {
       await mintProject();
+      await vault.setCollateralValue(1, ethers.parseUnits("10000"));
       await token.mint(await vault.getAddress(), ethers.parseUnits("10000"), "Liquidity");
       await nft.connect(user).approve(await vault.getAddress(), 1);
       await vault.connect(user).stakeNFT(1, ethers.parseUnits("100"));
