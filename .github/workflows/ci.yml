@@ -1,0 +1,30 @@
+name: Build and contract checks
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            hardhat-project/package-lock.json
+            fronted/package-lock.json
+      - name: Install contract dependencies
+        working-directory: hardhat-project
+        run: npm ci
+      - name: Compile and check contracts
+        working-directory: hardhat-project
+        run: npm test
+      - name: Install frontend dependencies
+        working-directory: fronted
+        run: npm ci
+      - name: Build frontend
+        working-directory: fronted
+        run: npm run build
