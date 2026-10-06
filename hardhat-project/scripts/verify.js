@@ -17,7 +17,7 @@ async function verify(name, address, constructorArguments) {
 }
 
 async function main() {
-  const manifestPath = path.resolve(__dirname, "../../fronted/src/contracts/deployment.json");
+  const manifestPath = path.resolve(__dirname, "../../fronted/src/contracts/deployment.sepolia.json");
   const deployment = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
   if (deployment.chainId !== 11155111) {
     throw new Error("The current deployment manifest is not for Sepolia.");

@@ -1,0 +1,15 @@
+{
+  "chainId": 11155111,
+  "network": "sepolia",
+  "deployedAt": "",
+  "deploymentBlock": 0,
+  "deployer": "",
+  "contracts": {
+    "CarbonCredit": "",
+    "CarbonCreditNFT": "",
+    "CarbonMultiSig": "",
+    "CarbonTimeLock": "",
+    "CarbonCreditVault": "",
+    "CarbonCreditTreasury": ""
+  }
+}

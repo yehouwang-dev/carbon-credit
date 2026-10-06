@@ -12,14 +12,21 @@ async function deploy(name, args = []) {
 }
 
 async function main() {
-  const [deployer] = await hre.ethers.getSigners();
   const network = await hre.ethers.provider.getNetwork();
+  const isLocalNetwork = network.chainId === 31337n || network.chainId === 1337n;
+  const isSepolia = network.chainId === 11155111n;
+
+  if (!isLocalNetwork && !isSepolia) {
+    throw new Error(`Unsupported chain ${network.chainId}. Deployment is limited to localhost and Sepolia.`);
+  }
+  if (isSepolia && !/^0x[a-fA-F0-9]{64}$/.test(process.env.PRIVATE_KEY || "")) {
+    throw new Error("A valid dedicated Sepolia test-wallet PRIVATE_KEY is required. Never use a wallet holding real assets.");
+  }
+
+  const [deployer] = await hre.ethers.getSigners();
+  if (!deployer) throw new Error("No deployer account is configured for this network.");
   const deploymentBlock = await hre.ethers.provider.getBlockNumber();
   const maxSupply = hre.ethers.parseUnits("1000000", 18);
-
-  if (network.chainId === 11155111n && !process.env.PRIVATE_KEY) {
-    throw new Error("PRIVATE_KEY is required for Sepolia deployment. Use a dedicated test wallet only.");
-  }
 
   console.log(`\nDeploying Carbon Credit Platform to chain ${network.chainId}...`);
   console.log("Deployer:", deployer.address);
@@ -38,8 +45,9 @@ async function main() {
   await (await carbonCredit.setProjectRegistry(await carbonCreditNFT.getAddress())).wait();
   console.log("  ✓ CarbonCredit linked to the verified project registry");
 
-  if (network.chainId === 31337n || network.chainId === 1337n) {
-    console.log("\nSeeding local demo data...");
+  const seedSepoliaDemo = isSepolia && process.env.SEED_SEPOLIA_DEMO === "true";
+  if (isLocalNetwork || seedSepoliaDemo) {
+    console.log(`\nSeeding ${isSepolia ? "Sepolia testnet" : "local"} demo data...`);
     await (await carbonCredit.mint(
       await carbonCreditVault.getAddress(),
       hre.ethers.parseUnits("100000", 18),
@@ -87,12 +95,13 @@ async function main() {
   };
 
   const outputDir = path.resolve(__dirname, "../../fronted/src/contracts");
+  const manifestName = isSepolia ? "deployment.sepolia.json" : "deployment.json";
   fs.mkdirSync(outputDir, { recursive: true });
   fs.writeFileSync(
-    path.join(outputDir, "deployment.json"),
+    path.join(outputDir, manifestName),
     `${JSON.stringify(deployment, null, 2)}\n`
   );
-  console.log("\nDeployment manifest written to fronted/src/contracts/deployment.json");
+  console.log(`\nDeployment manifest written to fronted/src/contracts/${manifestName}`);
 }
 
 main().catch((error) => {

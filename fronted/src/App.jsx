@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { useLanguage } from './i18n/useLanguage';
-import { createContracts, deployment } from './contracts/contracts';
+import { createContracts, deployment, isDeploymentConfigured } from './contracts/contracts';
 import './App.css';
 
 const EMPTY_STATS = {
@@ -189,6 +189,10 @@ function App() {
   };
 
   const connectMetaMask = async () => {
+    if (!isDeploymentConfigured) {
+      setErrorMessage(t('deploymentNotConfigured'));
+      return;
+    }
     if (!window.ethereum) {
       setErrorMessage(t('pleaseInstallMetaMask'));
       return;
@@ -231,6 +235,10 @@ function App() {
   };
 
   const connectLocalDemo = async () => {
+    if (deployment.network !== 'localhost' || !isDeploymentConfigured) {
+      setErrorMessage(t('localDemoUnavailable'));
+      return;
+    }
     setLoading(true);
     try {
       const rpcUrl = import.meta.env.VITE_LOCAL_RPC_URL || 'http://127.0.0.1:8545';
@@ -414,8 +422,8 @@ function App() {
         <div className="header-actions">
           <button className="lang-toggle" onClick={toggleLanguage}>{language === 'en' ? '中文' : 'English'}</button>
           {!account ? <>
-            <button className="demo-btn" onClick={connectLocalDemo} disabled={loading}>{t('localDemo')}</button>
-            <button className="connect-btn" onClick={connectMetaMask} disabled={loading}>{t('connectWallet')}</button>
+            {deployment.network === 'localhost' && <button className="demo-btn" onClick={connectLocalDemo} disabled={loading || !isDeploymentConfigured}>{t('localDemo')}</button>}
+            <button className="connect-btn" onClick={connectMetaMask} disabled={loading || !isDeploymentConfigured}>{t('connectWallet')}</button>
           </> : <button className="logout-btn" onClick={disconnect}>{t('disconnect')}</button>}
         </div>
       </header>
@@ -443,8 +451,20 @@ function App() {
           <div className="welcome-icon">◎</div>
           <h2>{t('welcomeTitle')}</h2>
           <p>{t('welcomeText')}</p>
-          <button className="demo-hero-button" onClick={connectLocalDemo} disabled={loading}>{loading ? t('loading') : t('enterDemo')}</button>
-          <small>{t('demoHint')}</small>
+          {deployment.network === 'sepolia' && <p className="network-notice">{t('sepoliaTestnetNotice')}</p>}
+          {!isDeploymentConfigured ? (
+            <p className="configuration-notice" role="status">{t('deploymentNotConfigured')}</p>
+          ) : deployment.network === 'localhost' ? (
+            <>
+              <button className="demo-hero-button" onClick={connectLocalDemo} disabled={loading}>{loading ? t('loading') : t('enterDemo')}</button>
+              <small>{t('demoHint')}</small>
+            </>
+          ) : (
+            <>
+              <button className="demo-hero-button" onClick={connectMetaMask} disabled={loading}>{loading ? t('loading') : t('connectWallet')}</button>
+              <small>{t('sepoliaWalletHint')}</small>
+            </>
+          )}
         </main>
       ) : (
         <main className="content">

@@ -1,5 +1,21 @@
 import { ethers } from 'ethers';
-import deployment from './deployment.json';
+import localDeployment from './deployment.json';
+import sepoliaDeployment from './deployment.sepolia.json';
+
+const selectedNetwork = import.meta.env.VITE_NETWORK || 'local';
+const deployments = {
+  local: localDeployment,
+  sepolia: sepoliaDeployment,
+};
+
+if (!Object.prototype.hasOwnProperty.call(deployments, selectedNetwork)) {
+  throw new Error(`Unsupported VITE_NETWORK "${selectedNetwork}". Use "local" or "sepolia".`);
+}
+
+export const deployment = deployments[selectedNetwork];
+export const isDeploymentConfigured = Object.values(deployment.contracts).every(
+  (address) => ethers.utils.isAddress(address) && address !== ethers.constants.AddressZero
+);
 
 export const CONTRACT_ABIS = {
   CarbonCredit: [
@@ -75,6 +91,9 @@ export const CONTRACT_ABIS = {
 };
 
 export function createContracts(signerOrProvider) {
+  if (!isDeploymentConfigured) {
+    throw new Error(`Contract addresses are not configured for ${deployment.network}.`);
+  }
   return Object.fromEntries(
     Object.entries(deployment.contracts).map(([name, address]) => [
       name,
@@ -82,5 +101,3 @@ export function createContracts(signerOrProvider) {
     ])
   );
 }
-
-export { deployment };

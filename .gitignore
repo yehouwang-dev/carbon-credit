@@ -5,6 +5,7 @@ artifacts/
 cache/
 coverage/
 .env
-.env.local
+.env.*
+!.env.example
+!.env.sepolia.example
 *.log
-
