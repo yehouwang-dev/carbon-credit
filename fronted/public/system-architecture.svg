@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1120" viewBox="0 0 1440 1120" role="img" aria-labelledby="title desc">
+  <title id="title">Carbon Credit Platform — system architecture</title>
+  <desc id="desc">React dashboard uses ethers.js and a signer to access Hardhat contracts. Credit queries the NFT registry; vault depends on registry and credit; treasury depends on credit. Multisig and timelock are independent, not application owners. Evidence is off-chain and unverified.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#091c18"/><stop offset="1" stop-color="#102c24"/></linearGradient>
+    <linearGradient id="card" x2="1" y2="1"><stop stop-color="#193d31"/><stop offset="1" stop-color="#122d25"/></linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#6ed6a5"/></marker>
+    <style>text{font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;fill:#e8f6ee}.muted{fill:#a4c3b4;font-size:18px}.label{fill:#88d9b0;font-size:14px;font-weight:700;letter-spacing:2px}.name{font-size:26px;font-weight:650}.body{font-size:18px;fill:#c4dccf}.line{fill:none;stroke:#6ed6a5;stroke-width:2;marker-end:url(#arrow)}.panel{fill:#10271f;stroke:#315744;stroke-width:1.5}.card{fill:url(#card);stroke:#3a6b51;stroke-width:1.5}</style>
+  </defs>
+  <rect width="1440" height="1120" rx="24" fill="url(#bg)"/>
+  <circle cx="1300" cy="90" r="210" fill="#20583d" opacity=".13"/>
+  <text x="64" y="58" class="label">RESEARCH PROTOTYPE / IMPLEMENTED SYSTEM</text>
+  <text x="64" y="108" font-size="40" font-weight="700">Carbon credit lifecycle, made inspectable.</text>
+  <text x="64" y="144" class="muted">Project review · recorded issuance limits · on-chain retirement records</text>
+
+  <rect x="64" y="178" width="1312" height="158" rx="20" class="card"/>
+  <text x="92" y="211" class="label">01 / EXPERIENCE + CONTRACT ACCESS</text>
+  <text x="92" y="253" class="name">React + Vite dashboard</text>
+  <text x="92" y="287" class="body">Applicants · reviewers · holders</text>
+  <text x="92" y="314" class="muted">Bilingual UI / certificate download + lookup</text>
+  <path d="M665 253H738" class="line"/>
+  <text x="772" y="251" class="name">ethers.js + signer</text>
+  <text x="772" y="286" class="body">Local demo account OR connected wallet</text>
+  <text x="772" y="314" class="muted">ABI + deployment JSON / direct RPC access</text>
+  <path d="M1060 336V373" class="line"/>
+  <text x="780" y="365" class="muted">Reads + transactions</text>
+
+  <rect x="64" y="386" width="1312" height="428" rx="20" class="panel"/>
+  <text x="92" y="421" class="label">02 / APPLICATION CONTRACTS — HARDHAT LOCAL EVM (31337)</text>
+  <text x="975" y="421" class="muted">Optional Sepolia configuration</text>
+  <rect x="92" y="450" width="566" height="150" rx="14" class="card"/>
+  <text x="116" y="483" class="label">PROJECT REGISTRY / ERC-721</text>
+  <text x="116" y="520" class="name">CarbonCreditNFT</text>
+  <text x="116" y="550" class="body">Application → review → project NFT</text>
+  <text x="116" y="579" class="muted">Recorded reduction · activity · evidence references</text>
+  <rect x="782" y="450" width="566" height="150" rx="14" class="card"/>
+  <text x="806" y="483" class="label">CREDIT LIFECYCLE / ERC-20</text>
+  <text x="806" y="520" class="name">CarbonCredit</text>
+  <text x="806" y="550" class="body">Project cap → issue → retire → certificate ID</text>
+  <text x="806" y="579" class="muted">Fungible balance / aggregate project accounting</text>
+  <path d="M782 525H658" class="line"/>
+  <text x="670" y="496" font-size="14" fill="#a4c3b4">Registry</text>
+  <text x="670" y="516" font-size="14" fill="#a4c3b4">read</text>
+  <rect x="92" y="649" width="566" height="139" rx="14" class="card"/>
+  <text x="116" y="683" class="label">COLLATERAL LOANS</text>
+  <text x="116" y="720" class="name">CarbonCreditVault</text>
+  <text x="116" y="751" class="body">NFT custody · manual valuation · repay / liquidate</text>
+  <path d="M355 649V600" class="line"/>
+  <text x="374" y="630" font-size="15" fill="#a4c3b4">NFT transfers</text>
+  <path d="M658 705H716V623H1040V600" class="line"/>
+  <text x="747" y="643" font-size="15" fill="#a4c3b4">CC loan / repayment transfers</text>
+  <rect x="782" y="668" width="566" height="120" rx="14" class="card"/>
+  <text x="806" y="700" class="label">TREASURY</text>
+  <text x="806" y="734" class="name">CarbonCreditTreasury</text>
+  <text x="806" y="766" class="body">CC funding + owner-controlled allocation</text>
+  <path d="M1230 668V600" class="line"/>
+  <text x="1246" y="635" font-size="14" fill="#a4c3b4">CC</text>
+  <text x="1246" y="653" font-size="14" fill="#a4c3b4">transfers</text>
+
+  <rect x="64" y="842" width="774" height="184" rx="18" fill="#252b20" stroke="#b7aa6a" stroke-dasharray="7 6"/>
+  <text x="92" y="878" font-size="14" font-weight="700" letter-spacing="2" fill="#dfcd8b">03 / INDEPENDENT GOVERNANCE PRIMITIVES</text>
+  <text x="92" y="920" class="name">CarbonMultiSig</text>
+  <text x="441" y="920" class="name">CarbonTimeLock</text>
+  <text x="92" y="951" class="body">Propose · confirm · execute</text>
+  <text x="441" y="951" class="body">Schedule · delay · execute</text>
+  <text x="92" y="995" font-size="18" fill="#dfcd8b">Deployed separately. No application ownership handoff.</text>
+  <rect x="862" y="842" width="514" height="184" rx="18" class="panel"/>
+  <text x="890" y="878" class="label">04 / TRUST BOUNDARY</text>
+  <text x="890" y="920" class="name">Off-chain evidence</text>
+  <text x="890" y="951" class="body">References only; no storage integration.</text>
+  <text x="890" y="981" class="muted">Environmental truth is not verified on-chain.</text>
+  <text x="64" y="1070" class="muted">Solid arrows = implemented dependencies. No API server, database, oracle, or integrated governance is claimed.</text>
+  <text x="64" y="1098" font-size="14" fill="#81a894">SOURCE OF TRUTH: hardhat-project/contracts + scripts/deploy.js / FICTIONAL LOCAL DATA ONLY</text>
+</svg>

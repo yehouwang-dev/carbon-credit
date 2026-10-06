@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "test": "node --test src/demo/model.test.js",
     "dev": "vite",
     "build": "vite build",
     "build:sepolia": "VITE_NETWORK=sepolia vite build --mode sepolia",

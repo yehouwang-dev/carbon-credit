@@ -146,6 +146,8 @@ Tests cover token caps/burns, project review permissions, linked issuance/retire
 
 ## Optional Sepolia rehearsal
 
+The public frontend also includes a wallet-free portfolio and an explicitly labelled browser-only simulation. See [Vercel deployment and access checks](docs/DEPLOYMENT.md). This mode needs no live blockchain; actual Sepolia wallet actions remain separate and disabled until contracts are configured.
+
 Sepolia configuration is prepared, but no active deployment is asserted. Deployment broadcasts public test transactions; use a dedicated test-only wallet.
 
 1. Create `hardhat-project/.env` from its `.env.example`; configure the wallet key and RPC. Keep `SEED_SEPOLIA_DEMO=false` unless intentionally publishing fictional fixtures.

@@ -9,3 +9,5 @@ coverage/
 !.env.example
 !.env.sepolia.example
 *.log
+# Vercel local account/project linkage
+.vercel/

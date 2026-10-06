@@ -28,6 +28,9 @@ jobs:
       - name: Build frontend
         working-directory: fronted
         run: npm run build
+      - name: Check browser-only simulation model
+        working-directory: fronted
+        run: npm test
       - name: Build Sepolia frontend shell
         working-directory: fronted
         run: VITE_NETWORK=sepolia npm run build:sepolia
