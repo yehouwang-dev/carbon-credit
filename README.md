@@ -4,7 +4,9 @@
 
 A research and portfolio prototype exploring carbon-credit lifecycle traceability on an EVM-compatible blockchain. It connects project applications, recorded issuance limits, and retirement certificates through contract state and events.
 
-> **Scope:** a local demonstration with fictional data—not a certified carbon registry, an audited financial product, or proof of real-world emission reductions. No maintained public deployment is included.
+> **Scope:** a research demonstration with fictional data—not a certified carbon registry, an audited financial product, or proof of real-world emission reductions. The public frontend is live; Sepolia contracts are not deployed/configured.
+
+**Live portfolio:** [carbon-credit-seven.vercel.app](https://carbon-credit-seven.vercel.app/) — browse without login or a wallet. Its interactive simulation runs only in the browser and does not create blockchain transactions.
 
 [Architecture](#system-architecture) · [Quick start](#quick-start) · [Demo guide](docs/DEMO.md) · [Tests](#verification) · [Limitations](#trust-assumptions-and-limitations)
 

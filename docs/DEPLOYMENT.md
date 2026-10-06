@@ -1,5 +1,13 @@
 # Public portfolio deployment
 
+## Current deployment
+
+Public URL: [https://carbon-credit-seven.vercel.app/](https://carbon-credit-seven.vercel.app/).
+
+The `carbon-credit` project is deployed independently under the owner's `david-office` Vercel space. The existing `app` project was not modified. Anonymous HTTPS access, the architecture image, simulated lifecycle, bilingual/mobile layout, and disabled Sepolia interaction were checked after publication.
+
+This release has no configured Sepolia contracts. Dependency audit reports 19 findings (3 high); dependency upgrades and regression checks are pending. Do not use this research demo with real assets. CLI publication does not establish automatic GitHub redeployment; a Git integration must be linked separately if desired.
+
 Configuration reference: [Vercel project configuration](https://vercel.com/docs/project-configuration) and [deployment file exclusions](https://vercel.com/docs/deployments/vercel-ignore).
 
 ## What visitors can use

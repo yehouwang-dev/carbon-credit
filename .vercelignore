@@ -5,5 +5,5 @@
 **/cache
 fronted/dist
 .git
-contracts
-hardhat-project
+/contracts/
+/hardhat-project/
