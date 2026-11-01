@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import App from './App';
 import { deployment, isDeploymentConfigured } from './contracts/contracts';
-import { createDemo, transitionDemo, queryDemoCertificate } from './demo/model';
+import { createDemo, transitionDemo } from './demo/model';
+import { ArchitectureExplorer, Lifecycle, useReducedMotion, useReveal } from './PortfolioMotion';
+import { ProjectPreview, SimulationWorkspace } from './PortfolioStudio';
 import './Portfolio.css';
 
 const copy = {
   en: {
+    pauseMotion: 'Pause motion', resumeMotion: 'Resume motion', reducedMotion: 'Reduced motion', steps: 'Simulation progress',
+    stepNames: ['Review', 'Issue', 'Retire', 'Query'], fullDisclaimer: 'Fictional fixtures. Real questions.', readMore: 'Explore the lifecycle',
     tag: 'RESEARCH PORTFOLIO / CARBON CREDIT TRACEABILITY', title: 'A clearer path from project to retirement.',
     intro: 'Explore how recorded project review, credit issuance limits, and retirement records connect. A working research prototype—not a certified carbon registry.',
     overview: 'Overview', simulation: 'Try the simulation', chain: 'Blockchain interface', architecture: 'System architecture',
@@ -26,6 +30,8 @@ const copy = {
     capExceeded: 'The recorded cap is exhausted; retirement does not reopen it.', reviewFirst: 'Approve the sample project first.', invalidAmount: 'Enter a positive whole number.', insufficientBalance: 'Not enough simulated balance.', beneficiaryRequired: 'Enter a beneficiary (1–120 characters).', alreadyApproved: 'This sample is already approved.', unknownAction: 'Unknown simulation action.',
   },
   zh: {
+    pauseMotion: '暂停动效', resumeMotion: '开启动效', reducedMotion: '已减少动效', steps: '模拟流程进度',
+    stepNames: ['审核', '发行', '核销', '查询'], fullDisclaimer: '虚构的数据，真实的研究问题。', readMore: '了解生命周期',
     tag: '研究项目 / 碳信用生命周期追溯', title: '从项目到核销，让记录更清晰。',
     intro: '探索项目审核记录、信用发行额度与核销凭证如何关联。这是可运行的研究原型，不是真实碳信用认证平台。',
     overview: '项目概览', simulation: '体验模拟演示', chain: '区块链接口', architecture: '系统架构',
@@ -48,6 +54,9 @@ const copy = {
 };
 
 export default function Portfolio() {
+  const root = useRef(null);
+  const reducedMotion = useReducedMotion();
+  const [motionPaused, setMotionPaused] = useState(false);
   const [language, setLanguage] = useState('en');
   const [view, setView] = useState('overview');
   const [state, setState] = useState(createDemo);
@@ -59,43 +68,50 @@ export default function Portfolio() {
   const [queried, setQueried] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [feedbackId, setFeedbackId] = useState(0);
+  useReveal(root, view, reducedMotion || motionPaused);
   const c = copy[language];
   const live = deployment.network === 'sepolia' && isDeploymentConfigured;
+  const completed = [state.approved, state.issued > 0, state.retired > 0, queried && Boolean(result)];
+  const clearFeedback = () => { setError(''); setMessage(''); };
+  const navigate = next => { clearFeedback(); setView(next); window.scrollTo({ top: 0, behavior: 'auto' }); };
   const act = action => {
+    setFeedbackId(id => id + 1);
     try {
       const next = transitionDemo(state, action);
       setState(next); setError(''); setMessage('success'); setQueried(false); setResult(null);
       if (action.type === 'retire') setQuery(next.certificates.at(-1).id);
       if (action.type === 'reset') { setQuery(''); setMessage(''); }
-    } catch (e) { setError(e.message); setMessage(''); }
+      return true;
+    } catch (e) { setError(e.message); setMessage(''); return false; }
   };
-  return <div className="portfolio" lang={language === 'zh' ? 'zh-CN' : 'en'}>
+  return <div ref={root} className="portfolio" data-motion-paused={motionPaused || reducedMotion} lang={language === 'zh' ? 'zh-CN' : 'en'}>
     <nav className="portfolio-nav" aria-label={language === 'zh' ? '主导航' : 'Main navigation'}>
-      <button className="portfolio-brand" onClick={() => setView('overview')}>◎ <span>CARBON / TRACE</span></button>
-      <div>{['overview', 'simulation', 'chain'].map(key => <button key={key} aria-pressed={view === key} onClick={() => setView(key)}>{c[key]}</button>)}<button onClick={() => setLanguage(language === 'en' ? 'zh' : 'en')}>{language === 'en' ? '中文' : 'English'}</button></div>
+      <button className="portfolio-brand" onClick={() => navigate('overview')}><span className="portfolio-brand-mark" aria-hidden="true">◎</span><span>CARBON / TRACE</span></button>
+      <div>{['overview', 'simulation', 'chain'].map(key => <button key={key} aria-pressed={view === key} onClick={() => navigate(key)}>{c[key]}</button>)}<button className="portfolio-motion-toggle" disabled={reducedMotion} aria-pressed={motionPaused || reducedMotion} onClick={() => setMotionPaused(value => !value)}><span aria-hidden="true">{motionPaused || reducedMotion ? '▷' : 'Ⅱ'}</span> {reducedMotion ? c.reducedMotion : motionPaused ? c.resumeMotion : c.pauseMotion}</button><button onClick={() => setLanguage(language === 'en' ? 'zh' : 'en')}>{language === 'en' ? '中文' : 'English'}</button></div>
     </nav>
     {view === 'chain' ? <><div className="portfolio-chain-note" role="status">{live ? c.live : c.notLive}</div><App /></> : <main className="portfolio-main">
       {view === 'overview' ? <>
-        <section className="portfolio-hero"><p className="portfolio-eyebrow">{c.tag}</p><h1>{c.title}</h1><p>{c.intro}</p><div className="portfolio-actions"><button className="portfolio-primary" onClick={() => setView('simulation')}>{c.simulation} ↗</button><a href="#architecture">{c.architecture} ↓</a></div><span className="portfolio-status">{live ? c.live : c.notLive}</span></section>
-        <section className="portfolio-features">{['noWallet', 'records', 'boundaries'].map((key, i) => <article key={key}><span>0{i + 1}</span><h2>{c[key]}</h2><p>{c[`${key}Text`]}</p></article>)}</section>
-        <section className="portfolio-question"><p className="portfolio-eyebrow">{c.question}</p><h2>{c.questionText}</h2></section>
-        <section id="architecture" className="portfolio-architecture"><h2>{c.architecture}</h2><p>{c.archText}</p><img src="/system-architecture.svg" alt={language === 'zh' ? '前端、合约依赖、独立治理原型及链外证据边界' : 'Frontend, contract dependencies, separate governance, and evidence trust boundaries'} loading="lazy" /></section>
-        <section className="portfolio-limitations"><h2>{c.limits}</h2><p>{c.limitsText}</p></section>
-      </> : <>
-        <section className="portfolio-simulation"><p className="portfolio-eyebrow">SIMULATION / NOT ON-CHAIN</p><h1>{c.simulation}</h1><p className="portfolio-warning">{c.disclaimer}</p>
-          <div className="portfolio-metrics">{[['balance', state.balance], ['issued', state.issued], ['retired', state.retired], ['capacity', state.cap - state.issued]].map(([key, value]) => <div key={key}><span>{c[key]}</span><strong>{value} <small>CC</small></strong></div>)}</div>
-          {error && <p className="portfolio-feedback is-error" role="alert">{c[error] || error}</p>}{message && <p className="portfolio-feedback" role="status">{c[message]}</p>}
-          <div className="portfolio-demo-grid">
-            <article><h2>{c.review}</h2><h3>{c.project}</h3><p>100 tCO₂e / 100 CC · {state.approved ? c.approved : c.pending}</p><button onClick={() => act({ type: 'approve' })} disabled={state.approved}>{c.review}</button></article>
-            <article><h2>{c.issue}</h2><label>{c.amount}<input type="number" min="1" step="1" value={issueAmount} onChange={e => setIssueAmount(e.target.value)} /></label><button onClick={() => act({ type: 'issue', amount: issueAmount })}>{c.issue}</button></article>
-            <article><h2>{c.retire}</h2><label>{c.amount}<input type="number" min="1" step="1" value={retireAmount} onChange={e => setRetireAmount(e.target.value)} /></label><label>{c.beneficiary}<input maxLength="120" value={beneficiary} onChange={e => setBeneficiary(e.target.value)} /></label><button onClick={() => act({ type: 'retire', amount: retireAmount, beneficiary })}>{c.retire}</button></article>
-            <article><h2>{c.verify}</h2><label>{c.query}<input value={query} placeholder="SIM-ONLY-0001" onChange={e => { setQuery(e.target.value); setQueried(false); setResult(null); }} /></label><button onClick={() => { setResult(queryDemoCertificate(state, query)); setQueried(true); }}>{c.verify}</button>{queried && <div className="portfolio-query-result" role="status">{result ? <><strong>{c.found}</strong><p>{result.id} · {result.amount} CC</p><p>{result.beneficiary} · {result.projectId}</p></> : c.notFound}</div>}</article>
-          </div>
-          <div className="portfolio-records">{!state.certificates.length ? <p>{c.empty}</p> : state.certificates.map(record => <button key={record.id} onClick={() => { setQuery(record.id); setResult(null); setQueried(false); }}>{record.id} · {record.amount} CC · {record.beneficiary}</button>)}</div>
-          <button className="portfolio-reset" onClick={() => act({ type: 'reset' })}>{c.reset}</button>
+        <section className="portfolio-hero">
+          <div className="portfolio-hero-copy"><p className="portfolio-eyebrow"><span className="portfolio-live-dot"/>{c.tag}</p><h1>{language === 'en' ? <><span>A clearer path</span>{' '}<span>from project to</span>{' '}<em>retirement.</em></> : <><span>从项目到核销，</span><em>让记录更清晰。</em></>}</h1><p className="portfolio-hero-intro">{c.intro}</p><div className="portfolio-actions"><button className="portfolio-primary" onClick={() => navigate('simulation')}>{c.simulation} <span aria-hidden="true">↗</span></button><a href="#lifecycle-title">{c.readMore} <span aria-hidden="true">↓</span></a></div><p className="portfolio-hero-caption">{c.fullDisclaimer}</p></div>
+          <ProjectPreview language={language} onDemo={() => navigate('simulation')}/>
         </section>
+        <div className="portfolio-trust-strip"><span className="trust-strip-label">{language === 'zh' ? '为可检查的记录而构建' : 'BUILT FOR INSPECTABLE RECORDS'}</span><div><span>EVM COMPATIBLE</span><span>ERC-721 + ERC-20</span><span>{language === 'zh' ? '仅研究演示' : 'RESEARCH PROTOTYPE'}</span></div></div>
+        <section className="portfolio-evidence" aria-labelledby="evidence-title" data-reveal>
+          <div className="evidence-intro"><p className="portfolio-eyebrow">{language === 'zh' ? '研究证据 / 2026.10.27 验证记录' : 'RESEARCH EVIDENCE / VALIDATED 27 OCT 2026'}</p><h2 id="evidence-title">{language === 'zh' ? <>不止展示。<br/>也经得起检查。</> : <>Made to explore.<br/><em>Built to inspect.</em></>}</h2><a href="https://github.com/yehouwang-dev/carbon-credit/blob/main/docs/RELEASE-VALIDATION.md" target="_blank" rel="noreferrer">{language === 'zh' ? '查看测试与局限说明' : 'Read validation & limitations'} <span aria-hidden="true">↗</span></a></div>
+          <div className="evidence-stat"><strong>33<span> / 33</span></strong><h3>{language === 'zh' ? '合约测试通过' : 'Contract tests passing'}</h3><p>{language === 'zh' ? '发行额度、权限和核销等合约行为。' : 'Contract behavior, including caps, permissions and retirement.'}</p></div>
+          <div className="evidence-stat"><strong>5<span> / 5</span></strong><h3>{language === 'zh' ? '查询基础验收通过' : 'Query acceptance checks'}</h3><p>{language === 'zh' ? '另有 9 项查询与证书安全回归通过。' : 'Plus 9 passing query and certificate safety regressions.'}</p></div>
+        </section>
+        <section className="portfolio-features">{['noWallet', 'records', 'boundaries'].map((key, i) => <article key={key} data-reveal><span>0{i + 1} <span aria-hidden="true">↗</span></span><h2>{c[key]}</h2><p>{c[`${key}Text`]}</p></article>)}</section>
+        <Lifecycle language={language} onDemo={() => navigate('simulation')}/>
+        <section className="portfolio-question" data-reveal><p className="portfolio-eyebrow">{c.question}</p><h2>{c.questionText}</h2><span aria-hidden="true">↗</span></section>
+        <ArchitectureExplorer language={language} c={c}/>
+        <section className="portfolio-limitations" data-reveal><span className="portfolio-eyebrow">03 / HONEST BY DESIGN</span><h2>{c.limits}</h2><p>{c.limitsText}</p></section>
+      </> : <>
+        <SimulationWorkspace {...{ language, c, state, act, clearFeedback, issueAmount, setIssueAmount, retireAmount, setRetireAmount, beneficiary, setBeneficiary, query, setQuery, result, setResult, queried, setQueried, error, message, feedbackId, completed }} animate={!motionPaused && !reducedMotion}/>
+
       </>}
     </main>}
-    <footer className="portfolio-footer"><p>Carbon Credit Platform · Research prototype · No real assets</p><p>{c.auth}</p></footer>
+    <footer className="portfolio-footer"><div><span className="footer-brand">◎ CARBON / TRACE</span><p>{language === 'zh' ? '碳信用追溯研究原型 · 无真实资产' : 'Carbon credit traceability · Research prototype · No real assets'}</p></div><div><a href="https://github.com/yehouwang-dev/carbon-credit" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a><p>{c.auth}</p><p className="portfolio-status">{live ? c.live : c.notLive}</p></div></footer>
   </div>;
 }

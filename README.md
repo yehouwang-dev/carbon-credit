@@ -1,6 +1,8 @@
 # Carbon Credit Platform
 
-### Project review → constrained issuance → verifiable retirement
+#The 2026-11-01 interface refresh adds a cream-and-forest presentation and a guided, wallet-free workspace with session-only receipt cards. [Interface design and checks](docs/UI-REDESIGN.md).
+
+## Project review → constrained issuance → verifiable retirement
 
 A research and portfolio prototype exploring carbon-credit lifecycle traceability on an EVM-compatible blockchain. It connects project applications, recorded issuance limits, and retirement certificates through contract state and events.
 
@@ -49,7 +51,7 @@ Follow the [2–3 minute demo guide](docs/DEMO.md). The local account combines a
 
 ## Quick start
 
-Prerequisites: Node.js 20 and npm, plus internet access for first-time installation. From the repository root:
+Prerequisites: Node.js 24 and npm, plus internet access for first-time installation. From the repository root:
 
 ```bash
 npm run demo
@@ -123,7 +125,7 @@ Never use Hardhat development keys or accounts on a public network.
 
 Use `hardhat-project/contracts/` as the implementation reference. Root-level `contracts/` copies are not compiled by the current Hardhat project.
 
-**Stack:** React 18 · Vite 4 · ethers.js 5 (frontend) · Hardhat 2 · ethers.js 6 (deployment/tests) · Solidity 0.8.28 · OpenZeppelin Contracts 5.
+**Stack:** React 18 · Vite 8 · ethers.js 6 (frontend and tooling) · Hardhat 2 · Solidity 0.8.28 · OpenZeppelin Contracts 5.
 
 ## Verification
 
@@ -131,6 +133,8 @@ From the repository root:
 
 ```bash
 npm --prefix hardhat-project test
+npm --prefix fronted test
+npm --prefix fronted run test:acceptance
 npm --prefix fronted run build
 ```
 
@@ -161,6 +165,8 @@ Sepolia configuration is prepared, but no active deployment is asserted. Deploym
 Never commit private keys, `.env` files, API secrets, or funded-wallet credentials. Examples contain placeholders only. Static hosting alone does not make a localhost chain accessible to visitors.
 
 ## Portfolio authorship
+
+See the [application material and contribution boundaries](docs/APPLICATION.md), [current validation report](docs/RELEASE-VALIDATION.md), and [MetaMask/Sepolia preparation guide](docs/SEPOLIA-WALLET.md). Current certificate-query acceptance is 5/5; the report separates local evidence from the still-pending public testnet deployment.
 
 This repository includes AI-assisted implementation and documentation. Applications should distinguish personal design decisions, code contributions, testing, and interpretation from AI assistance. This README does not assert unverified independent authorship or certification.
 

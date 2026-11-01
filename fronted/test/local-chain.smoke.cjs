@@ -1,0 +1,44 @@
+const { chromium } = require('playwright');
+const assert = require('node:assert/strict');
+const path = require('node:path');
+(async () => {
+  const b = await chromium.launch({ headless: true, channel: 'chrome' });
+  try {
+    const p = await b.newPage(); const errors=[];
+    p.on('pageerror', e=>errors.push(e.message));
+    await p.addInitScript(()=>localStorage.setItem('language','en'));
+    await p.goto('http://127.0.0.1:18083');
+    await p.getByRole('button',{name:'Enter local demo',exact:true}).click();
+    await p.getByRole('heading',{name:'Carbon credit operations'}).waitFor();
+    await p.waitForFunction(()=>Array.from(document.querySelectorAll('button')).some(b=>b.textContent==='Mint Credits'&&!b.disabled));
+    await p.getByRole('button',{name:'Mint Credits',exact:true}).click();
+    await p.waitForFunction(()=>document.querySelector('.success-banner')?.textContent.includes('completed successfully'));
+    const ops=p.locator('.action-card').filter({has:p.getByRole('heading',{name:'Carbon credit operations'})});
+    await ops.getByLabel('Amount',{exact:true}).fill('10');
+    const beneficiary=`Browser Regression ${Date.now()}`;
+    await ops.getByLabel('Retirement beneficiary').fill(beneficiary);
+    await ops.getByLabel('Reason / reference').fill('Local-only ethers 6 verification');
+    await p.getByRole('button',{name:'Burn Credits',exact:true}).click();
+    await p.waitForFunction(()=>document.querySelector('.success-banner')?.textContent.includes('Burn Credits: completed successfully'));
+    await p.locator('.retirement-item').filter({hasText:beneficiary}).waitFor();
+    const { JsonRpcProvider, Contract }=require(path.resolve(__dirname,'../node_modules/ethers'));
+    const deployment=require('../src/contracts/deployment.json');
+    const provider=new JsonRpcProvider('http://127.0.0.1:18545');
+    const token=new Contract(deployment.contracts.CarbonCredit,['event CarbonRetired(bytes32 indexed certificateId,address indexed account,uint256 indexed projectTokenId,uint256 amount,string beneficiary,string reason,uint256 timestamp)'],provider);
+    const events=await token.queryFilter(token.filters.CarbonRetired(),deployment.deploymentBlock);
+    const event=events.at(-1); assert.ok(event); const certificate=event.args.certificateId;
+    const verifier=p.locator('.verifier-card');
+    await verifier.getByLabel('Verify a retirement certificate',{exact:true}).fill(certificate);
+    await verifier.getByRole('button',{name:'Verify',exact:true}).click();
+    await verifier.locator('.verified-record').waitFor();
+    assert.match(await verifier.locator('.verified-record').innerText(),/Browser Regression/);
+    await verifier.getByLabel('Verify a retirement certificate',{exact:true}).fill('not-valid');
+    assert.equal(await verifier.locator('.verified-record').count(),0);
+    await verifier.getByRole('button',{name:'Verify',exact:true}).click();
+    await p.getByRole('alert').waitFor();
+    assert.match(await p.getByRole('alert').innerText(),/32-byte/);
+    assert.deepEqual(errors,[]);
+    console.log(JSON.stringify({status:'PASS',scope:'LOCAL HARDHAT ONLY',certificateId:certificate,retirementTransaction:event.transactionHash,chainId:'31337',checks:['ethers6 signer/read','mint','retire','certificate query','invalid input clears stale result']}));
+    provider.destroy();
+  } finally { await b.close(); }
+})().catch(e=>{console.error(e);process.exitCode=1});

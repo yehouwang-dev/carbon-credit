@@ -11,3 +11,6 @@ coverage/
 *.log
 # Vercel local account/project linkage
 .vercel/
+
+# Local historical demo recordings; source sync excludes binary media.
+/docs/media/

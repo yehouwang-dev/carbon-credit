@@ -14,7 +14,7 @@ if (!Object.prototype.hasOwnProperty.call(deployments, selectedNetwork)) {
 
 export const deployment = deployments[selectedNetwork];
 export const isDeploymentConfigured = Object.values(deployment.contracts).every(
-  (address) => ethers.utils.isAddress(address) && address !== ethers.constants.AddressZero
+  (address) => ethers.isAddress(address) && address !== ethers.ZeroAddress
 );
 
 export const CONTRACT_ABIS = {

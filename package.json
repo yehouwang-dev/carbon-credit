@@ -2,6 +2,7 @@
   "name": "carbon-credit-portfolio",
   "version": "1.0.0",
   "private": true,
+  "engines": { "node": "24.x" },
   "scripts": {
     "demo": "node scripts/demo.mjs"
   }

@@ -9,7 +9,7 @@
 | Layer | Implementation | Responsibility |
 | --- | --- | --- |
 | Presentation | `fronted/src/App.jsx`, React/Vite | Bilingual forms, state/event reads, certificate download/query |
-| Contract access | `fronted/src/contracts/contracts.js`, ethers.js 5 | ABI definitions and local/Sepolia address selection |
+| Contract access | `fronted/src/contracts/contracts.js`, ethers.js 6 | ABI definitions and local/Sepolia address selection |
 | Transport/signing | Local JSON-RPC signer or wallet provider | Read chain state and submit transactions; no application API server |
 | Application contracts | `hardhat-project/contracts/` | Registry, accounting, collateral custody, treasury |
 | Tooling | `scripts/demo.mjs`, Hardhat, deploy script | Start services, deploy six contracts, seed fixtures, write manifest |

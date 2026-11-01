@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
           cache-dependency-path: |
             hardhat-project/package-lock.json
@@ -31,6 +31,15 @@ jobs:
       - name: Check browser-only simulation model
         working-directory: fronted
         run: npm test
+      - name: Check certificate acceptance and regression
+        working-directory: fronted
+        run: npm run test:acceptance
+      - name: Check high-severity frontend advisories
+        working-directory: fronted
+        run: npm audit --audit-level=high
+      - name: Check high-severity tooling advisories
+        working-directory: hardhat-project
+        run: npm audit --audit-level=high
       - name: Build Sepolia frontend shell
         working-directory: fronted
         run: VITE_NETWORK=sepolia npm run build:sepolia

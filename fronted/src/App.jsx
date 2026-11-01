@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ethers } from 'ethers';
 import { useLanguage } from './i18n/useLanguage';
 import { createContracts, deployment, isDeploymentConfigured } from './contracts/contracts';
+import { createCertificateQuery } from './contracts/certificateQuery';
+import { escapeHtml } from './contracts/escapeHtml';
 import './App.css';
 
 const EMPTY_STATS = {
@@ -22,7 +24,7 @@ const EMPTY_STATS = {
 };
 
 function formatCC(value, digits = 2) {
-  const number = Number(ethers.utils.formatUnits(value || 0, 18));
+  const number = Number(ethers.formatUnits(value || 0, 18));
   return new Intl.NumberFormat(undefined, { maximumFractionDigits: digits }).format(number);
 }
 
@@ -60,6 +62,16 @@ function App() {
   const [copied, setCopied] = useState(false);
   const [certificateQuery, setCertificateQuery] = useState(() => new URLSearchParams(window.location.search).get('certificate') || '');
   const [certificateRecord, setCertificateRecord] = useState(null);
+  const [certificateLoading, setCertificateLoading] = useState(false);
+  const translate = useRef(t);
+  translate.current = t;
+  const certificateLookup = useRef(null);
+  if (!certificateLookup.current) certificateLookup.current = createCertificateQuery({
+    onRecord: setCertificateRecord,
+    onError: key => setErrorMessage(key ? translate.current(key) : ''),
+    onLoading: setCertificateLoading,
+  });
+  useEffect(() => () => certificateLookup.current.cancel(), []);
   const [tokenForm, setTokenForm] = useState({ amount: '100', reason: '', recipient: '', projectId: '1', beneficiary: '' });
   const [projectForm, setProjectForm] = useState({
     name: '', type: 'Solar', reduction: '100', location: '', verifier: '', standard: 'VCS',
@@ -98,15 +110,15 @@ function App() {
       setStats({
         balance: formatCC(balance), totalSupply: formatCC(totalSupply),
         totalMinted: formatCC(totalMinted), totalBurned: formatCC(totalBurned),
-        maxSupply: formatCC(maxSupply, 0), projectCount: projectCount.toNumber(),
-        totalStaked: totalStaked.toNumber(), treasuryBalance: formatCC(treasuryBalance),
-        vaultLiquidity: formatCC(vaultLiquidity), signers: signers.toNumber(),
-        confirmations: confirmations.toNumber(),
+        maxSupply: formatCC(maxSupply, 0), projectCount: Number(projectCount),
+        totalStaked: Number(totalStaked), treasuryBalance: formatCC(treasuryBalance),
+        vaultLiquidity: formatCC(vaultLiquidity), signers: Number(signers),
+        confirmations: Number(confirmations),
         tokenPaused, nftPaused, vaultPaused,
       });
 
       const visibleProjects = [];
-      for (let id = 1; id <= projectCount.toNumber(); id += 1) {
+      for (let id = 1; id <= Number(projectCount); id += 1) {
         try {
           const projectOwner = await nft.ownerOf(id);
           const project = await nft.getProject(id);
@@ -116,7 +128,7 @@ function App() {
           if (projectOwner.toLowerCase() === activeAccount.toLowerCase() || issuer || reviewer) {
             visibleProjects.push({
               tokenId: id, owner: projectOwner, name: project.projectName, type: project.projectType,
-              reduction: (project.emissionReduction.toNumber() / 100).toLocaleString(),
+              reduction: (Number(project.emissionReduction) / 100).toLocaleString(),
               location: project.location, verifier: project.verifier, active: project.isActive,
               standard: project.standard, vintage: project.vintage, documentHash: project.documentHash,
               issued: formatCC(issued), retired: formatCC(retired), remaining: formatCC(remaining),
@@ -128,15 +140,15 @@ function App() {
       }
       setProjects(visibleProjects);
       const visibleApplications = [];
-      for (let id = 1; id <= applicationCount.toNumber(); id += 1) {
+      for (let id = 1; id <= Number(applicationCount); id += 1) {
         const application = await nft.getApplication(id);
         if (reviewer || application.applicant.toLowerCase() === activeAccount.toLowerCase()) {
           visibleApplications.push({
             id, applicant: application.applicant, name: application.projectName,
-            type: application.projectType, reduction: application.emissionReduction.toNumber() / 100,
+            type: application.projectType, reduction: Number(application.emissionReduction) / 100,
             standard: application.standard, vintage: application.vintage,
             documentHash: application.documentHash, status: Number(application.status),
-            reviewReason: application.reviewReason, tokenId: application.tokenId.toNumber(),
+            reviewReason: application.reviewReason, tokenId: Number(application.tokenId),
           });
         }
       }
@@ -145,10 +157,12 @@ function App() {
         userStakes.map((stake) => vault.activeStakes(stake.tokenId))
       );
       setStakes(userStakes.filter((stake, index) =>
-        stake.staker !== ethers.constants.AddressZero && stakeStatuses[index]
+        stake.staker !== ethers.ZeroAddress && stakeStatuses[index]
       ));
 
-      const latestBlock = await activeContracts.CarbonCredit.provider.getBlockNumber();
+      // Read an uncached head after writes; ethers' short getBlockNumber cache
+      // can otherwise omit a just-confirmed retirement from the event window.
+      const latestBlock = Number(await activeContracts.CarbonCredit.runner.provider.send('eth_blockNumber', []));
       const burnEvents = await queryEventsInChunks(
         token,
         token.filters.CarbonRetired(null, activeAccount),
@@ -158,11 +172,11 @@ function App() {
       setRetirements(burnEvents.slice(-10).reverse().map((event) => ({
         hash: event.transactionHash,
         certificateId: event.args.certificateId,
-        projectId: event.args.projectTokenId.toNumber(),
+        projectId: Number(event.args.projectTokenId),
         amount: formatCC(event.args.amount),
         beneficiary: event.args.beneficiary,
         reason: event.args.reason,
-        timestamp: new Date(event.args.timestamp.toNumber() * 1000).toLocaleString(),
+        timestamp: new Date(Number(event.args.timestamp) * 1000).toLocaleString(),
       })));
       setErrorMessage('');
     } catch (error) {
@@ -174,9 +188,10 @@ function App() {
   };
 
   const attachConnection = async (nextProvider, nextSigner, mode) => {
+    certificateLookup.current.reset();
     const nextAccount = await nextSigner.getAddress();
     const nextNetwork = await nextProvider.getNetwork();
-    if (nextNetwork.chainId !== deployment.chainId) {
+    if (Number(nextNetwork.chainId) !== deployment.chainId) {
       throw new Error(`${t('wrongNetwork')} ${deployment.chainId}`);
     }
     const nextContracts = createContracts(nextSigner);
@@ -225,8 +240,8 @@ function App() {
           });
         }
       }
-      const nextProvider = new ethers.providers.Web3Provider(window.ethereum);
-      await attachConnection(nextProvider, nextProvider.getSigner(), 'metamask');
+      const nextProvider = new ethers.BrowserProvider(window.ethereum);
+      await attachConnection(nextProvider, await nextProvider.getSigner(), 'metamask');
     } catch (error) {
       setErrorMessage(error?.message || t('walletConnectionFailed'));
     } finally {
@@ -242,8 +257,8 @@ function App() {
     setLoading(true);
     try {
       const rpcUrl = import.meta.env.VITE_LOCAL_RPC_URL || 'http://127.0.0.1:8545';
-      const nextProvider = new ethers.providers.JsonRpcProvider(rpcUrl);
-      await attachConnection(nextProvider, nextProvider.getSigner(0), 'demo');
+      const nextProvider = new ethers.JsonRpcProvider(rpcUrl);
+      await attachConnection(nextProvider, await nextProvider.getSigner(0), 'demo');
     } catch (error) {
       console.error(error);
       setErrorMessage(t('localNodeUnavailable'));
@@ -273,6 +288,7 @@ function App() {
   }, [contracts, stakeForm.tokenId]);
 
   const disconnect = () => {
+    certificateLookup.current.reset();
     setProvider(null); setContracts(null); setAccount(null); setNetwork(null);
     setWalletMode(null); setIsOwner(false); setStats(EMPTY_STATS);
     setRoles({ issuer: false, reviewer: false });
@@ -298,11 +314,11 @@ function App() {
     }
   };
 
-  const amountInWei = () => ethers.utils.parseUnits(tokenForm.amount || '0', 18);
+  const amountInWei = () => ethers.parseUnits(tokenForm.amount || '0', 18);
   const handleMint = () => runTransaction(t('mint'), () =>
     contracts.CarbonCredit.mintFromProject(
       Number(tokenForm.projectId),
-      ethers.utils.isAddress(tokenForm.recipient) ? tokenForm.recipient : account,
+      ethers.isAddress(tokenForm.recipient) ? tokenForm.recipient : account,
       amountInWei(),
       tokenForm.reason || 'Verified project issuance'
     )
@@ -341,7 +357,7 @@ function App() {
   const handleSetCollateralValue = () => runTransaction(
     t('setAppraisal'),
     () => contracts.CarbonCreditVault.setCollateralValue(
-      Number(stakeForm.tokenId), ethers.utils.parseUnits(stakeForm.collateralValue || '0', 18)
+      Number(stakeForm.tokenId), ethers.parseUnits(stakeForm.collateralValue || '0', 18)
     )
   );
   const handlePause = (contractName, shouldPause) => runTransaction(
@@ -353,21 +369,21 @@ function App() {
     }
   );
   const handlePartialRepayment = (stake) => runTransaction(t('partialRepayment'), async () => {
-    const amount = ethers.utils.parseUnits(stakeForm.repayment || '0', 18);
+    const amount = ethers.parseUnits(stakeForm.repayment || '0', 18);
     const approval = await contracts.CarbonCredit.approve(deployment.contracts.CarbonCreditVault, amount);
     await approval.wait();
     return contracts.CarbonCreditVault.repayLoan(stake.tokenId, amount);
   });
   const handleStake = () => runTransaction(t('stake'), async () => {
     const tokenId = Number(stakeForm.tokenId);
-    const amount = ethers.utils.parseUnits(stakeForm.amount || '0', 18);
+    const amount = ethers.parseUnits(stakeForm.amount || '0', 18);
     const approval = await contracts.CarbonCreditNFT.approve(deployment.contracts.CarbonCreditVault, tokenId);
     await approval.wait();
     return contracts.CarbonCreditVault.stakeNFT(tokenId, amount);
   });
   const handleUnstake = (stake) => runTransaction(t('unstake'), async () => {
     const repayment = stake.ccLocked;
-    if (!repayment.isZero()) {
+    if (repayment !== 0n) {
       const approval = await contracts.CarbonCredit.approve(deployment.contracts.CarbonCreditVault, repayment);
       await approval.wait();
     }
@@ -382,31 +398,12 @@ function App() {
   };
 
   const verifyCertificate = async () => {
-    if (!contracts || !ethers.utils.isHexString(certificateQuery, 32)) {
-      setErrorMessage(t('invalidCertificateId'));
-      return;
-    }
-    try {
-      const record = await contracts.CarbonCredit.getRetirement(certificateQuery);
-      setCertificateRecord({
-        certificateId: record.certificateId,
-        account: record.account,
-        beneficiary: record.beneficiary,
-        projectId: record.projectTokenId.toNumber(),
-        amount: formatCC(record.amount),
-        reason: record.reason,
-        timestamp: new Date(record.timestamp.toNumber() * 1000).toLocaleString(),
-      });
-      setErrorMessage('');
-    } catch (error) {
-      setCertificateRecord(null);
-      setErrorMessage(t('certificateNotFound'));
-    }
+    await certificateLookup.current.run(contracts?.CarbonCredit, certificateQuery);
   };
 
   const downloadCertificate = (item) => {
     const verificationUrl = `${window.location.origin}/?certificate=${item.certificateId}`;
-    const html = `<!doctype html><html><head><meta charset="utf-8"><title>Carbon Retirement Certificate</title><style>body{font-family:Arial,sans-serif;background:#f4f7f4;padding:48px;color:#243328}.certificate{max-width:760px;margin:auto;background:white;border:10px solid #294f2f;padding:52px;text-align:center}.eyebrow{letter-spacing:.2em;color:#6b796e}.amount{font-size:54px;color:#294f2f;margin:24px 0}.details{text-align:left;margin-top:36px;border-top:1px solid #ccd6ce;padding-top:20px}.details p{overflow-wrap:anywhere}.seal{width:76px;height:76px;border:3px solid #b8913e;border-radius:50%;display:grid;place-items:center;margin:34px auto 0;color:#8a681f;font-weight:bold}</style></head><body><main class="certificate"><p class="eyebrow">CARBON CREDIT RETIREMENT</p><h1>Certificate of Retirement</h1><p>This certifies that the following carbon credits were permanently retired on-chain.</p><div class="amount">${item.amount} CC</div><div class="details"><p><strong>Certificate ID:</strong> ${item.certificateId}</p><p><strong>Beneficiary:</strong> ${item.beneficiary}</p><p><strong>Account:</strong> ${account}</p><p><strong>Project NFT:</strong> #${item.projectId}</p><p><strong>Purpose:</strong> ${item.reason}</p><p><strong>Time:</strong> ${item.timestamp}</p><p><strong>Transaction:</strong> ${item.hash}</p><p><strong>Chain ID:</strong> ${network?.chainId}</p><p><strong>Verification:</strong> ${verificationUrl}</p></div><div class="seal">VERIFIED</div></main></body></html>`;
+    const html = `<!doctype html><html><head><meta charset="utf-8"><title>Carbon Retirement Certificate</title><style>body{font-family:Arial,sans-serif;background:#f4f7f4;padding:48px;color:#243328}.certificate{max-width:760px;margin:auto;background:white;border:10px solid #294f2f;padding:52px;text-align:center}.eyebrow{letter-spacing:.2em;color:#6b796e}.amount{font-size:54px;color:#294f2f;margin:24px 0}.details{text-align:left;margin-top:36px;border-top:1px solid #ccd6ce;padding-top:20px}.details p{overflow-wrap:anywhere}.seal{width:76px;height:76px;border:3px solid #b8913e;border-radius:50%;display:grid;place-items:center;margin:34px auto 0;color:#8a681f;font-weight:bold}</style></head><body><main class="certificate"><p class="eyebrow">CARBON CREDIT RETIREMENT</p><h1>Certificate of Retirement</h1><p>This certifies that the following carbon credits were permanently retired on-chain.</p><div class="amount">${escapeHtml(item.amount)} CC</div><div class="details"><p><strong>Certificate ID:</strong> ${escapeHtml(item.certificateId)}</p><p><strong>Beneficiary:</strong> ${escapeHtml(item.beneficiary)}</p><p><strong>Account:</strong> ${escapeHtml(account)}</p><p><strong>Project NFT:</strong> #${escapeHtml(item.projectId)}</p><p><strong>Purpose:</strong> ${escapeHtml(item.reason)}</p><p><strong>Time:</strong> ${escapeHtml(item.timestamp)}</p><p><strong>Transaction:</strong> ${escapeHtml(item.hash)}</p><p><strong>Chain ID:</strong> ${escapeHtml(network?.chainId)}</p><p><strong>Verification:</strong> ${escapeHtml(verificationUrl)}</p></div><div class="seal">VERIFIED</div></main></body></html>`;
     const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
     const link = document.createElement('a');
     link.href = url;
@@ -488,7 +485,7 @@ function App() {
               <div className="actions">
                 {roles.issuer && <button className="btn-primary" onClick={handleMint} disabled={loading}>{t('mint')}</button>}
                 <button className="btn-danger" onClick={handleBurn} disabled={loading}>{t('burn')}</button>
-                <button className="btn-secondary" onClick={handleTransfer} disabled={loading || !ethers.utils.isAddress(tokenForm.recipient)}>{t('transfer')}</button>
+                <button className="btn-secondary" onClick={handleTransfer} disabled={loading || !ethers.isAddress(tokenForm.recipient)}>{t('transfer')}</button>
               </div>
             </div>
 
@@ -538,8 +535,8 @@ function App() {
                 <option value="reviewer">{t('reviewerRole')}</option>
                 <option value="issuer">{t('issuerRole')}</option>
               </select>
-              <button className="approve-button" onClick={() => handleRoleUpdate(true)} disabled={loading || !ethers.utils.isAddress(roleForm.address)}>{t('grantRole')}</button>
-              <button className="reject-button" onClick={() => handleRoleUpdate(false)} disabled={loading || !ethers.utils.isAddress(roleForm.address)}>{t('revokeRole')}</button>
+              <button className="approve-button" onClick={() => handleRoleUpdate(true)} disabled={loading || !ethers.isAddress(roleForm.address)}>{t('grantRole')}</button>
+              <button className="reject-button" onClick={() => handleRoleUpdate(false)} disabled={loading || !ethers.isAddress(roleForm.address)}>{t('revokeRole')}</button>
             </div>
           </section>}
 
@@ -604,7 +601,7 @@ function App() {
 
           <section className="card verifier-card">
             <h2>{t('verifyCertificate')}</h2>
-            <div className="verify-row"><input value={certificateQuery} onChange={(e) => setCertificateQuery(e.target.value)} placeholder="0x…" /><button className="btn-primary" onClick={verifyCertificate}>{t('verify')}</button></div>
+            <div className="verify-row"><input aria-label={t('verifyCertificate')} value={certificateQuery} onChange={(e) => { certificateLookup.current.reset(); setCertificateQuery(e.target.value); }} placeholder="0x…" /><button className="btn-primary" onClick={verifyCertificate} disabled={certificateLoading}>{certificateLoading ? t('certificateQuerying') : t('verify')}</button></div>
             {certificateRecord && <div className="verified-record"><strong>✓ {t('certificateValid')}</strong><span>{certificateRecord.amount} CC · NFT #{certificateRecord.projectId}</span><span>{certificateRecord.beneficiary}</span><small>{certificateRecord.certificateId}</small></div>}
           </section>
         </main>

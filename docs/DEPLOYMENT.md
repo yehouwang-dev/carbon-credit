@@ -6,13 +6,13 @@ Public URL: [https://carbon-credit-seven.vercel.app/](https://carbon-credit-seve
 
 The `carbon-credit` project is deployed independently under the owner's `david-office` Vercel space. The existing `app` project was not modified. Anonymous HTTPS access, the architecture image, simulated lifecycle, bilingual/mobile layout, and disabled Sepolia interaction were checked after publication.
 
-This release has no configured Sepolia contracts. Dependency audit reports 19 findings (3 high); dependency upgrades and regression checks are pending. Do not use this research demo with real assets. CLI publication does not establish automatic GitHub redeployment; a Git integration must be linked separately if desired.
+This release has no configured Sepolia contracts. On 2026-11-01 the frontend audit reports zero findings; the Hardhat 2 development toolchain reports 8 low and 4 moderate findings, with no high or critical findings. The earlier zero-moderate audit was a dated snapshot; current advisories include legacy glob/minimatch paths. See [release validation](RELEASE-VALIDATION.md). Do not use this research demo with real assets. CLI publication does not establish automatic GitHub redeployment; a Git integration must be linked separately if desired.
 
 Configuration reference: [Vercel project configuration](https://vercel.com/docs/project-configuration) and [deployment file exclusions](https://vercel.com/docs/deployments/vercel-ignore).
 
 ## What visitors can use
 
-The public build starts with a bilingual project overview, architecture diagram, and a wallet-free simulation. The simulation is deliberately labelled: it uses fictional browser-session data, makes no RPC calls, and generates `SIM-ONLY-*` IDs, not blockchain certificates. Reset/reload clears it.
+The public build starts with a bilingual cream-and-forest project overview, dated validation evidence, an architecture explorer, and a wallet-free simulation. The simulation uses a guided four-step workspace, a persistent project summary and session-only receipt cards. See [the interface redesign](UI-REDESIGN.md). The simulation is deliberately labelled: it uses fictional browser-session data, makes no RPC calls, and generates `SIM-ONLY-*` IDs, not blockchain certificates. Reset/reload clears it.
 
 The separate blockchain interface uses the existing contract UI. It remains disabled when the Sepolia address manifest is empty. Configured addresses are not proof of an audited deployment or environmental certification.
 

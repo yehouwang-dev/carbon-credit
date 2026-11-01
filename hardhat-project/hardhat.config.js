@@ -1,5 +1,5 @@
 require("@nomicfoundation/hardhat-ethers");
-require("@nomiclabs/hardhat-etherscan");
+require("@nomicfoundation/hardhat-verify");
 require("dotenv").config();
 
 /** @type import('hardhat/config/HardhatUserConfig') */
