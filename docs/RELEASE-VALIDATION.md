@@ -5,7 +5,8 @@
 - Chrome regression passes: complete lifecycle, out-of-order errors, query miss/recovery, in-page navigation/session retention, reset, Chinese/English, 320/390/768/1024/1440px widths, architecture selection and keyboard, pause/reduced motion, disabled unconfigured wallets. No RPC or third-party asset calls, page errors or failed assets in the presentation/simulation.
 - Contract suite: 33/33 passing. Current tooling audit: 8 low, 4 moderate, 0 high/critical. New advisory results differ from the historical 27 October snapshot below. Moderate findings include legacy glob/minimatch and their Hardhat/Mocha dependency paths. A forced Hardhat 3 migration is not part of this visual release.
 - No Sepolia configuration or public testnet transactions were added. The browser model remains separate from the blockchain interface.
-- GitHub and Vercel publication are in progress; final publication is verified against the resulting branch head and public deployment.
+- Source sync is published to `yehouwang-dev/carbon-credit`. Implementation commit `21452ec336d2baa2017f95489a225f93523df99c` passed GitHub CI. The final preview-clarity correction and publication notes are included in the follow-up commit.
+- Production is live at https://carbon-credit-seven.vercel.app/ on deployment `dpl_AtUVjHRaVuCoTsLJB7f5574wVdMX`. Final build: JS `index-COw9vYE0.js`, CSS `index-CWiau9uP.css`. An anonymous Chrome session passed the complete browser regression against this public URL after promotion; no bypass or login was needed.
 - The older two-minute video stays local and records the 27 October interface. The recording script supports the guided workspace; the binary video is not included in this source sync.
 
 # 2026-10-27 修复与升级验证

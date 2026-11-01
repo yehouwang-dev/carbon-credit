@@ -1,6 +1,6 @@
 # Carbon Credit Platform
 
-#The 2026-11-01 interface refresh adds a cream-and-forest presentation and a guided, wallet-free workspace with session-only receipt cards. [Interface design and checks](docs/UI-REDESIGN.md).
+The 2026-11-01 interface refresh adds a cream-and-forest presentation and a guided, wallet-free workspace with session-only receipt cards. [Interface design and checks](docs/UI-REDESIGN.md).
 
 ## Project review → constrained issuance → verifiable retirement
 

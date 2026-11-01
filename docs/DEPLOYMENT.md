@@ -2,6 +2,8 @@
 
 ## Current deployment
 
+The 2026-11-01 visual release was built and promoted as `dpl_AtUVjHRaVuCoTsLJB7f5574wVdMX`. Anonymous public browser checks passed for the guided simulation, receipt queries and errors, reset, bilingual responsive layouts, architecture and motion preferences. Source and publication notes are synchronized to GitHub.
+
 Public URL: [https://carbon-credit-seven.vercel.app/](https://carbon-credit-seven.vercel.app/).
 
 The `carbon-credit` project is deployed independently under the owner's `david-office` Vercel space. The existing `app` project was not modified. Anonymous HTTPS access, the architecture image, simulated lifecycle, bilingual/mobile layout, and disabled Sepolia interaction were checked after publication.

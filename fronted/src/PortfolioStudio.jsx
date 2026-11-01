@@ -64,7 +64,6 @@ export function ProjectPreview({ language, onDemo }) {
     <div className="preview-stats"><div><span>{t.cap}</span><strong>100 <small>CC</small></strong></div><div><span>{t.reduction}</span><strong>100 <small>tCO₂e</small></strong></div></div>
     <div className="preview-lifecycle">{(language === 'zh' ? ['审核', '发行', '核销', '查询'] : ['Review', 'Issue', 'Retire', 'Query']).map((name, i) => <span key={name}><i>0{i + 1}</i>{name}{i < 3 && <b aria-hidden="true">→</b>}</span>)}</div>
     <figcaption><span className="preview-note-dot"/>{t.terrainNote}<button onClick={onDemo} aria-label={language === 'zh' ? '打开模拟工作台' : 'Open the simulation workspace'}>↗</button></figcaption>
-    <div className="preview-floating-note"><span aria-hidden="true">↗</span><div><strong>{language === 'zh' ? '从审核，到一条可查询记录。' : 'From review to a readable record.'}</strong><span>{language === 'zh' ? '仅研究演示 · 无需钱包' : 'Research prototype · wallet-free'}</span></div></div>
   </figure>;
 }
 
