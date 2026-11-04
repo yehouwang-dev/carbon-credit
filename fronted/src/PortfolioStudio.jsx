@@ -7,13 +7,13 @@ const labels = {
     sample: 'ILLUSTRATIVE PROJECT', forest: 'Demo Forest', category: 'Forest conservation · fictional fixture',
     status: 'Sample project', map: 'PROJECT LANDSCAPE / CONCEPT ONLY', cap: 'Recorded issuance cap', reduction: 'Recorded reduction',
     terrainNote: 'Illustrative landscape. No real project location.', snapshot: 'A lifecycle, at a glance.',
-    receipt: 'RETIREMENT RECORD', receiptTag: 'SESSION ONLY', receiptEmpty: 'Your next record starts here.',
+    receipt: 'Retirement record', receiptTag: 'Session only', receiptEmpty: 'Your next record starts here.',
     receiptHelp: 'Retire credits in the simulation to create an inspectable record.', issuedTo: 'Beneficiary', linked: 'Linked project',
-    desk: 'YOUR RESEARCH WORKSPACE', deskIntro: 'Follow one project through its lifecycle. Every action updates the project summary beside you.',
-    projectSummary: 'PROJECT SUMMARY', projectId: 'Project identifier', approved: 'Review recorded', pending: 'Awaiting review',
-    next: ['Record a reviewer decision for this fictional project.', 'Issue within the project’s cumulative limit.', 'Retire a balance and name a beneficiary.', 'Inspect the record you have just created.'],
+    desk: 'Simulation workspace', deskIntro: 'Follow one project through its lifecycle. Every action updates the project summary beside you.',
+    projectSummary: 'Project summary', projectId: 'Project identifier', approved: 'Review recorded', pending: 'Awaiting review',
+    next: ['Review the project', 'Issue within the cap', 'Retire a balance', 'Inspect the record'],
     descriptions: ['The sample has a recorded reduction of 100 tCO₂e and an issuance cap of 100 CC. Approval changes its simulated review state.', 'The cap counts all credits issued. Retiring credits does not restore capacity.', 'Retirement removes credits from the simulated balance and creates a session-only record.', 'Use a SIM-ONLY ID from this session. These records are separate from blockchain certificates.'],
-    selected: 'CURRENT STEP', total: 'SESSION RECORDS', emptyTitle: 'A record you can inspect.', emptyText: 'Complete review, issuance and retirement to see the resulting record here.',
+    selected: 'Current step', total: 'Session records', emptyTitle: 'A record you can inspect.', emptyText: 'Complete review, issuance and retirement to see the resulting record here.',
     nextStep: 'Continue to next step', back: 'Previous step', fresh: 'Start a new walkthrough',
     noEvidence: 'Fictional data · No environmental certification', architecture: 'Explore the architecture',
     sampleRecord: 'Sample record · preview only', simulated: 'Simulated retirement', quantity: 'Retired amount',
@@ -86,7 +86,7 @@ export function SimulationWorkspace({ language, c, state, act, clearFeedback, is
   const latest = state.certificates.at(-1);
   return <section className="portfolio-simulation">
     <header className="studio-heading"><div><p className="portfolio-eyebrow">{t.desk}</p><h1>{c.simulation}</h1><p>{t.deskIntro}</p></div><span className="studio-session-badge"><i/>{language === 'zh' ? '浏览器会话' : 'BROWSER SESSION'}</span></header>
-    <p className="portfolio-warning"><span aria-hidden="true">ⓘ</span>{c.disclaimer}</p>
+    <details className="studio-disclaimer"><summary>{language === 'zh' ? '仅浏览器模拟，使用虚构数据。' : 'Browser simulation with fictional data.'}</summary><p className="portfolio-warning">{c.disclaimer}</p></details>
     <ol className="simulation-progress" aria-label={c.steps}>{c.stepNames.map((name, i) => <li key={i} data-complete={completed[i]}><button aria-pressed={step === i} aria-controls={`studio-panel-${i}`} aria-current={step === i ? 'step' : undefined} onClick={() => go(i)}><span aria-hidden="true">{completed[i] ? '✓' : `0${i + 1}`}</span><span>{name}<small>{language === 'zh' ? ['审核示例项目', '记录信用发行', '生成核销记录', '查询会话凭证'][i] : ['Review the project', 'Record issuance', 'Create a record', 'Inspect the result'][i]}</small></span><span className="portfolio-sr-only">{completed[i] ? (language === 'zh' ? '已完成' : 'completed') : (language === 'zh' ? '尚未完成' : 'not completed')}</span><b aria-hidden="true">↗</b></button></li>)}</ol>
     <div className="studio-workspace">
       <aside className="studio-project"><p className="studio-aside-label">{t.projectSummary}</p><h2>{t.forest}<span aria-hidden="true">♧</span></h2><p className="studio-project-id">SIM-PROJECT-1</p><Landscape compact/><span className={`studio-review-state${state.approved ? ' is-approved' : ''}`}><i/>{state.approved ? t.approved : t.pending}</span><div className="portfolio-metrics">{[['balance', state.balance], ['issued', state.issued], ['retired', state.retired], ['capacity', state.cap - state.issued]].map(([key, value]) => <div key={key}><span>{c[key]}</span><strong><AnimatedValue value={value} animate={animate}/> <small>CC</small></strong></div>)}</div><p className="studio-privacy">{t.privacy}</p></aside>

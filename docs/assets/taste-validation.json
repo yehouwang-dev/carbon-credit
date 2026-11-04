@@ -1,0 +1,824 @@
+{
+  "before": {
+    "at": "2026-11-04T03:09:07.206Z",
+    "findings": [
+      {
+        "level": "FAIL",
+        "id": "headline-lines",
+        "width": 1440,
+        "message": "1 headline(s) wrap past two lines at 1440px: \"A clearer path from project to retirement.\" → 3 lines (7 words, 78px)",
+        "fix": "Cut words first (a headline is a title, not a sentence). Then give it a wider measure. Lower the size only as a last resort and never below the scale you chose. A real statement paragraph belongs in a <p> or <blockquote> at 36px or less."
+      },
+      {
+        "level": "WARN",
+        "id": "mixed-font-headline",
+        "width": 1440,
+        "message": "2 headline(s) switch typeface or to italic mid-line (the \"one italic serif word\" move).",
+        "fix": "Set the whole headline in one face. Emphasis comes from the words.",
+        "alsoAt": [
+          768,
+          390
+        ]
+      },
+      {
+        "level": "FAIL",
+        "id": "eyebrow",
+        "width": 1440,
+        "message": "4 eyebrow/kicker label(s) above headings: \"RESEARCH EVIDENCE / VALIDATED 27 OCT 2026\" above \"Made to explore. Built to inspect.\"; \"01 / THE LIFECYCLE\" above \"Four stages. One traceable thread.\"; \"THE RESEARCH QUESTION\" above \"How can a verifier inspect the relations\"; \"02 / UNDER THE SURFACE\" above \"System architecture\"",
+        "fix": "Delete them. If the label carried real information, fold it into the headline or the supporting sentence.",
+        "alsoAt": [
+          768,
+          390
+        ]
+      },
+      {
+        "level": "FAIL",
+        "id": "mono",
+        "width": 1440,
+        "message": "Monospace type outside code: ui-monospace — e.g. \"SIM-PROJECT-1\", \"N ↑\", \"REACT / ETHERS.JS\", \"CarbonCreditNFT\"",
+        "fix": "Set it in the text face. Monospace is for literal code inside <pre>/<code> only.",
+        "alsoAt": [
+          768,
+          390
+        ]
+      },
+      {
+        "level": "FAIL",
+        "id": "numbering",
+        "width": 1440,
+        "message": "Decorative index numbers: \"01\", \"02\", \"03\", \"04\", \"01\", \"02\"",
+        "fix": "Remove them. If order truly matters, write it into the words (\"First, …\") or use a real <ol>.",
+        "alsoAt": [
+          768,
+          390
+        ]
+      },
+      {
+        "level": "FAIL",
+        "id": "micro-label",
+        "width": 1440,
+        "message": "16 tiny uppercase letter-spaced labels (e.g. \"RESEARCH PORTFOLIO / CARBON CREDIT TRACE\", \"CARBON / TRACE\", \"ILLUSTRATIVE PROJECT\", \"SIM-PROJECT-1\").",
+        "fix": "Use sentence-case text at a readable size, or delete the label.",
+        "alsoAt": [
+          768,
+          390
+        ]
+      },
+      {
+        "level": "FAIL",
+        "id": "emoji",
+        "width": 1440,
+        "message": "Emoji in the page: ♧",
+        "fix": "Remove. Use words or real imagery.",
+        "alsoAt": [
+          768,
+          390
+        ]
+      },
+      {
+        "level": "FAIL",
+        "id": "shadow",
+        "width": 1440,
+        "message": "1 box-shadow(s) on elements at rest: figure.project-preview → rgba(35, 62, 52, 0.17) 0px 20px 55px -26px, rgba(36, 59, 50, 0.063) 0px 2px 7px ",
+        "fix": "Remove. Separate surfaces with a tone step or space. Shadows are for things that really float (menus, dialogs, sticky bars).",
+        "alsoAt": [
+          768,
+          390
+        ]
+      },
+      {
+        "level": "FAIL",
+        "id": "hairline",
+        "width": 1440,
+        "message": "17 thin rule(s)/divider line(s): nav.portfolio-nav 1360px | div.preview-browser 528px | div.preview-stats 481px | figcaption 528px",
+        "fix": "Delete. Separate with space, a tone change, or scale. Lines are only for real tables and form fields.",
+        "alsoAt": [
+          768,
+          390
+        ]
+      },
+      {
+        "level": "FAIL",
+        "id": "outlined-box",
+        "width": 1440,
+        "message": "7 boxes drawn with a 1px outline.",
+        "fix": "Define a surface by its fill (one tone step from the page) or leave the content unboxed.",
+        "alsoAt": [
+          768
+        ]
+      },
+      {
+        "level": "WARN",
+        "id": "dashed",
+        "width": 1440,
+        "message": "1 dashed/dotted border(s).",
+        "fix": "Remove unless it is a real drop zone.",
+        "alsoAt": [
+          768,
+          390
+        ]
+      },
+      {
+        "level": "WARN",
+        "id": "palette-cream",
+        "width": 1440,
+        "message": "Yellow-cream background (section #f6f5ef, section #fffefa).",
+        "fix": "Use the drawn palette. If you want warmth, take a low-chroma stone or bone, not a yellow cream.",
+        "alsoAt": [
+          768,
+          390
+        ]
+      },
+      {
+        "level": "WARN",
+        "id": "contrast",
+        "width": 1440,
+        "message": "Low-contrast text: \"ERC-721\" 2.6:1 needs 4.5:1; \"Review\" 2.8:1 needs 4.5:1; \"Issue\" 2.8:1 needs 4.5:1; \"Retire\" 2.8:1 needs 4.5:1",
+        "fix": "Darken or lighten the text colour.",
+        "alsoAt": [
+          768,
+          390
+        ]
+      },
+      {
+        "level": "WARN",
+        "id": "font-count",
+        "width": 1440,
+        "message": "3 typefaces in use (Inter, Georgia, ui-monospace).",
+        "fix": "Two at most.",
+        "alsoAt": [
+          768,
+          390
+        ]
+      },
+      {
+        "level": "WARN",
+        "id": "size-count",
+        "width": 1440,
+        "message": "21 different font sizes (8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 21, 23, 25, 27, 28, 30, 35, 37, 64, 78).",
+        "fix": "A page needs about five: display, heading, lead, body, small.",
+        "alsoAt": [
+          768,
+          390
+        ]
+      },
+      {
+        "level": "FAIL",
+        "id": "body-size",
+        "width": 1440,
+        "message": "Body text is 13px (the size most of the running text is set in).",
+        "fix": "Body copy 16–20px. Map small sizes from blueprints onto your body step.",
+        "alsoAt": [
+          768,
+          390
+        ]
+      },
+      {
+        "level": "WARN",
+        "id": "grey-body",
+        "width": 1440,
+        "message": "The running text is a soft grey on its ground (4.5:1).",
+        "fix": "Set body copy in the full ink (7:1 or more). Keep the muted ink for secondary notes; pages read thin and unfinished when everything is grey.",
+        "alsoAt": [
+          768,
+          390
+        ]
+      },
+      {
+        "level": "FAIL",
+        "id": "few-pictures",
+        "width": 1440,
+        "message": "Only 0 picture(s) on the page (0 photographs, footage or raster images, 0 interface fragments). Drawings in SVG do not count.",
+        "fix": "Find real pictures of the subject's world with scripts/assets.mjs (photographs, archival images, maps, engravings, footage), download them to assets/ and give them room: a hero picture, one per section that has a subject, a full-width band. At least four, usually six to twelve."
+      },
+      {
+        "level": "WARN",
+        "id": "no-footage",
+        "width": 1440,
+        "message": "No video anywhere on the page.",
+        "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+      },
+      {
+        "level": "WARN",
+        "id": "measure",
+        "width": 1440,
+        "message": "Longest paragraph runs about 131 characters per line.",
+        "fix": "Cap paragraphs at 45–75 characters (max-width: 60ch).",
+        "alsoAt": [
+          768
+        ]
+      },
+      {
+        "level": "FAIL",
+        "id": "small-text",
+        "width": 1440,
+        "message": "39 text blocks under 13px.",
+        "fix": "Nothing meant to be read goes below 13px.",
+        "alsoAt": [
+          768,
+          390
+        ]
+      },
+      {
+        "level": "WARN",
+        "id": "off-centre",
+        "width": 1440,
+        "message": "The margins differ: 88px on the left, 125px on the right, at 1440px.",
+        "fix": "Put the navigation and the content on one pair of margins; check for padding on one side only, a scrollbar gutter, or a header on another inset than the page."
+      },
+      {
+        "level": "FAIL",
+        "id": "headline-lines",
+        "width": 768,
+        "message": "1 headline(s) wrap past two lines at 768px: \"A clearer path from project to retirement.\" → 3 lines (7 words, 48px)",
+        "fix": "Cut words first (a headline is a title, not a sentence). Then give it a wider measure. Lower the size only as a last resort and never below the scale you chose. A real statement paragraph belongs in a <p> or <blockquote> at 32px or less."
+      },
+      {
+        "level": "FAIL",
+        "id": "headline-lines",
+        "width": 390,
+        "message": "3 headline(s) wrap past two lines at 390px: \"A clearer path from project to retirement.\" → 3 lines (7 words, 46px); \"Made to explore. Built to inspect.\" → 3 lines (6 words, 28px); \"How can a verifier inspect the relationship betw\" → 5 lines (19 words, 24px)",
+        "fix": "Cut words first (a headline is a title, not a sentence). Then give it a wider measure. Lower the size only as a last resort and never below the scale you chose. A real statement paragraph belongs in a <p> or <blockquote> at 24px or less."
+      },
+      {
+        "level": "WARN",
+        "id": "outlined-box",
+        "width": 390,
+        "message": "2 box(es) drawn with a 1px outline.",
+        "fix": "Prefer a filled surface or no box."
+      }
+    ],
+    "viewports": [
+      {
+        "width": 1440,
+        "hero": {
+          "text": "A clearer path from project to retirement.",
+          "words": 7,
+          "chars": 42,
+          "lines": 3,
+          "size": 78,
+          "vw": 5.4,
+          "font": "Georgia",
+          "weight": 400,
+          "tracking": -0.049,
+          "leading": 1.02,
+          "upper": false,
+          "italic": false,
+          "mono": false,
+          "align": "left",
+          "position": "left",
+          "widthRatio": 0.4,
+          "top": 247,
+          "mixedFonts": [
+            "Georgia",
+            "Georgia italic"
+          ],
+          "tag": "h1",
+          "kind": "heading"
+        },
+        "type": {
+          "body": {
+            "font": "Inter",
+            "size": 13,
+            "leading": 1.85,
+            "weight": 400,
+            "tracking": 0,
+            "contrast": 4.5
+          },
+          "sizeCount": 21,
+          "sizes": [
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            17,
+            18,
+            19,
+            21,
+            23,
+            25,
+            27,
+            28,
+            30,
+            35,
+            37,
+            64,
+            78
+          ]
+        },
+        "motion": {
+          "elements": 16,
+          "css": 4,
+          "transitions": 12,
+          "scripted": 0,
+          "videos": 0,
+          "playingVideos": 0
+        },
+        "consoleErrors": []
+      },
+      {
+        "width": 768,
+        "hero": {
+          "text": "33 / 33",
+          "words": 3,
+          "chars": 7,
+          "lines": 1,
+          "size": 50,
+          "vw": 6.5,
+          "font": "Georgia",
+          "weight": 400,
+          "tracking": -0.06,
+          "leading": 1,
+          "upper": false,
+          "italic": false,
+          "mono": false,
+          "align": "left",
+          "position": "center",
+          "widthRatio": 0.11,
+          "top": 917,
+          "tag": "strong",
+          "kind": "heading"
+        },
+        "type": {
+          "body": {
+            "font": "Inter",
+            "size": 13,
+            "leading": 1.85,
+            "weight": 400,
+            "tracking": 0,
+            "contrast": 4.5
+          },
+          "sizeCount": 22,
+          "sizes": [
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            17,
+            18,
+            19,
+            20,
+            21,
+            23,
+            24,
+            25,
+            28,
+            31,
+            35,
+            48,
+            50
+          ]
+        },
+        "motion": {
+          "elements": 16,
+          "css": 4,
+          "transitions": 12,
+          "scripted": 0,
+          "videos": 0,
+          "playingVideos": 0
+        },
+        "consoleErrors": []
+      },
+      {
+        "width": 390,
+        "hero": {
+          "text": "A clearer path from project to retirement.",
+          "words": 7,
+          "chars": 42,
+          "lines": 3,
+          "size": 46,
+          "vw": 11.8,
+          "font": "Georgia",
+          "weight": 400,
+          "tracking": -0.052,
+          "leading": 1.02,
+          "upper": false,
+          "italic": false,
+          "mono": false,
+          "align": "left",
+          "position": "center",
+          "widthRatio": 0.89,
+          "top": 240,
+          "mixedFonts": [
+            "Georgia",
+            "Georgia italic"
+          ],
+          "tag": "h1",
+          "kind": "heading"
+        },
+        "type": {
+          "body": {
+            "font": "Inter",
+            "size": 13,
+            "leading": 1.85,
+            "weight": 400,
+            "tracking": 0,
+            "contrast": 4.5
+          },
+          "sizeCount": 22,
+          "sizes": [
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            20,
+            21,
+            24,
+            26,
+            27,
+            28,
+            31,
+            32,
+            35,
+            46,
+            51
+          ]
+        },
+        "motion": {
+          "elements": 16,
+          "css": 4,
+          "transitions": 12,
+          "scripted": 0,
+          "videos": 0,
+          "playingVideos": 0
+        },
+        "consoleErrors": []
+      }
+    ]
+  },
+  "page": {
+    "at": "2026-11-04T03:23:25.299Z",
+    "findings": [
+      {
+        "level": "WARN",
+        "id": "no-real-pictures",
+        "width": 1440,
+        "message": "Only 0 real photograph(s) or clip(s); the rest are interface fragments.",
+        "fix": "Add two or more real pictures of the customer's world from scripts/assets.mjs, not stock of people at laptops."
+      },
+      {
+        "level": "WARN",
+        "id": "no-footage",
+        "width": 1440,
+        "message": "No video anywhere on the page.",
+        "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+      }
+    ],
+    "viewports": [
+      {
+        "width": 1440,
+        "hero": {
+          "text": "Carbon credit records.",
+          "words": 3,
+          "chars": 22,
+          "lines": 2,
+          "size": 92.2,
+          "vw": 6.4,
+          "font": "Switzer",
+          "weight": 600,
+          "tracking": -0.045,
+          "leading": 1.03,
+          "upper": false,
+          "italic": false,
+          "mono": false,
+          "align": "left",
+          "position": "left",
+          "widthRatio": 0.46,
+          "top": 179,
+          "tag": "h1",
+          "kind": "heading"
+        },
+        "type": {
+          "body": {
+            "font": "Switzer",
+            "size": 18,
+            "leading": 1.5,
+            "weight": 400,
+            "tracking": 0,
+            "contrast": 13.5
+          },
+          "sizeCount": 9,
+          "sizes": [
+            14,
+            16,
+            18,
+            24,
+            32,
+            36,
+            56,
+            79,
+            92
+          ]
+        },
+        "motion": {
+          "elements": 27,
+          "css": 3,
+          "transitions": 24,
+          "scripted": 0,
+          "videos": 0,
+          "playingVideos": 0
+        },
+        "consoleErrors": []
+      },
+      {
+        "width": 768,
+        "hero": {
+          "text": "10 CC",
+          "words": 2,
+          "chars": 5,
+          "lines": 1,
+          "size": 76,
+          "vw": 9.9,
+          "font": "Switzer",
+          "weight": 500,
+          "tracking": -0.05,
+          "leading": 1,
+          "upper": false,
+          "italic": false,
+          "mono": false,
+          "align": "left",
+          "position": "center",
+          "widthRatio": 0.74,
+          "top": 785,
+          "tag": "p",
+          "kind": "heading"
+        },
+        "type": {
+          "body": {
+            "font": "Switzer",
+            "size": 18,
+            "leading": 1.5,
+            "weight": 400,
+            "tracking": 0,
+            "contrast": 13.5
+          },
+          "sizeCount": 9,
+          "sizes": [
+            14,
+            16,
+            18,
+            24,
+            32,
+            36,
+            40,
+            42,
+            65
+          ]
+        },
+        "motion": {
+          "elements": 27,
+          "css": 3,
+          "transitions": 24,
+          "scripted": 0,
+          "videos": 0,
+          "playingVideos": 0
+        },
+        "consoleErrors": []
+      },
+      {
+        "width": 390,
+        "hero": {
+          "text": "10 CC",
+          "words": 2,
+          "chars": 5,
+          "lines": 1,
+          "size": 64,
+          "vw": 16.4,
+          "font": "Switzer",
+          "weight": 500,
+          "tracking": -0.05,
+          "leading": 1,
+          "upper": false,
+          "italic": false,
+          "mono": false,
+          "align": "left",
+          "position": "center",
+          "widthRatio": 0.63,
+          "top": 779,
+          "tag": "p",
+          "kind": "heading"
+        },
+        "type": {
+          "body": {
+            "font": "Switzer",
+            "size": 16,
+            "leading": 1.5,
+            "weight": 400,
+            "tracking": 0,
+            "contrast": 13.5
+          },
+          "sizeCount": 7,
+          "sizes": [
+            13,
+            14,
+            16,
+            18,
+            24,
+            36,
+            50
+          ]
+        },
+        "motion": {
+          "elements": 27,
+          "css": 3,
+          "transitions": 24,
+          "scripted": 0,
+          "videos": 0,
+          "playingVideos": 0
+        },
+        "consoleErrors": []
+      }
+    ]
+  },
+  "workspace": {
+    "at": "2026-11-04T03:25:04.474Z",
+    "findings": [
+      {
+        "level": "WARN",
+        "id": "ragged-row",
+        "width": 1440,
+        "message": "1 pair(s) of cards in one row end at different heights (by 96px).",
+        "fix": "Cards that share a row share a bottom edge: balance them by their content (the same number of rows, a block of similar height beside it), or stack them. In testing, ragged rows were marked down every time.",
+        "alsoAt": [
+          768
+        ]
+      }
+    ],
+    "viewports": [
+      {
+        "width": 1440,
+        "hero": {
+          "text": "Try the simulation",
+          "words": 3,
+          "chars": 18,
+          "lines": 1,
+          "size": 32,
+          "vw": 2.2,
+          "font": "Switzer",
+          "weight": 500,
+          "tracking": -0.03,
+          "leading": 1.2,
+          "top": 164,
+          "tag": "h1",
+          "kind": "heading",
+          "align": "left",
+          "position": "left"
+        },
+        "type": {
+          "body": {
+            "font": "Switzer",
+            "size": 14,
+            "leading": 1.8,
+            "weight": 400,
+            "tracking": 0,
+            "contrast": 12.1
+          },
+          "sizeCount": 11,
+          "sizes": [
+            12,
+            13,
+            14,
+            17,
+            18,
+            21,
+            24,
+            30,
+            32,
+            36,
+            79
+          ]
+        },
+        "motion": {
+          "elements": 0,
+          "css": 0,
+          "transitions": 0,
+          "scripted": 0,
+          "videos": 0,
+          "playingVideos": 0
+        },
+        "consoleErrors": []
+      },
+      {
+        "width": 768,
+        "hero": {
+          "text": "Try the simulation",
+          "words": 3,
+          "chars": 18,
+          "lines": 1,
+          "size": 32,
+          "vw": 4.2,
+          "font": "Switzer",
+          "weight": 500,
+          "tracking": -0.03,
+          "leading": 1.2,
+          "top": 224,
+          "tag": "h1",
+          "kind": "heading",
+          "align": "left",
+          "position": "left"
+        },
+        "type": {
+          "body": {
+            "font": "Switzer",
+            "size": 14,
+            "leading": 1.8,
+            "weight": 400,
+            "tracking": 0,
+            "contrast": 12.1
+          },
+          "sizeCount": 11,
+          "sizes": [
+            12,
+            13,
+            14,
+            17,
+            18,
+            21,
+            24,
+            30,
+            32,
+            36,
+            42
+          ]
+        },
+        "motion": {
+          "elements": 0,
+          "css": 0,
+          "transitions": 0,
+          "scripted": 0,
+          "videos": 0,
+          "playingVideos": 0
+        },
+        "consoleErrors": []
+      },
+      {
+        "width": 390,
+        "hero": {
+          "text": "Try the simulation",
+          "words": 3,
+          "chars": 18,
+          "lines": 1,
+          "size": 28,
+          "vw": 7.2,
+          "font": "Switzer",
+          "weight": 500,
+          "tracking": -0.03,
+          "leading": 1.2,
+          "top": 243,
+          "tag": "h1",
+          "kind": "heading",
+          "align": "left",
+          "position": "left"
+        },
+        "type": {
+          "body": {
+            "font": "Switzer",
+            "size": 14,
+            "leading": 1.8,
+            "weight": 400,
+            "tracking": 0,
+            "contrast": 12.1
+          },
+          "sizeCount": 10,
+          "sizes": [
+            12,
+            13,
+            14,
+            17,
+            18,
+            21,
+            24,
+            28,
+            30,
+            36
+          ]
+        },
+        "motion": {
+          "elements": 0,
+          "css": 0,
+          "transitions": 0,
+          "scripted": 0,
+          "videos": 0,
+          "playingVideos": 0
+        },
+        "consoleErrors": []
+      }
+    ]
+  }
+}

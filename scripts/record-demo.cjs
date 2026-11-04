@@ -8,7 +8,7 @@ const fs = require('node:fs');
   const p=await context.newPage(); const errors=[];p.on('pageerror',e=>errors.push(e.message));
   try{
     await p.goto(process.env.DEMO_URL || 'http://127.0.0.1:18082/');
-    await p.getByRole('heading',{name:'A clearer path from project to retirement.'}).waitFor();
+    await p.getByRole('heading',{name:'Carbon credit records.'}).waitFor();
     await p.evaluate(()=>{
       const box=document.createElement('div');box.id='recording-caption';box.style.cssText='position:fixed;left:32px;right:32px;bottom:16px;z-index:10000;background:#07130ff2;border:1px solid #729c76;border-radius:8px;padding:12px 18px;color:#e4f2df;font:15px/1.5 system-ui;box-shadow:0 6px 30px #0008;pointer-events:none';document.body.append(box);
     });

@@ -1,3 +1,11 @@
+# 2026-11-04 Taste Skill refinement
+
+- Page inspector: 0 FAIL, 2 documented warnings at 1440/768/390px; workspace inspector: 0 FAIL, 1 documented warning. New page source lint: 0 FAIL, 1 app-border warning. [Measurements](assets/taste-validation.json) and [design critique](TASTE-REVIEW.md).
+- Model tests 5/5 and query/security tests 14/14 pass. Production build and local full-browser regression pass, including the new model preview and expandable simulation disclosure. Smart contracts were unchanged; the 33-test contract result below is dated previous evidence.
+- Fontshare stylesheet/font assets are an explicit external allowlist. The overview and simulation make no RPC calls; this replaces the older no-external-assets statement for this release.
+- Production promoted to `dpl_12f3mQc3XTag6S1r2ePK4NQAFEVY`, using JS `index-Cmx_nEc9.js` and CSS `index-3EGQOQHU.css`. The complete anonymous browser regression passed against the public production URL after promotion, including the new preview and disclosure control.
+- Sepolia remains unconfigured; no testnet transactions were created.
+
 # 2026-11-01 interface release validation
 
 - Warm off-white/forest presentation, a native SVG illustrative project, dated validation evidence, and a guided four-step workspace with persistent project state and session-only receipts.

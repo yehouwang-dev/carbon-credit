@@ -2,9 +2,10 @@ import React, { useRef, useState } from 'react';
 import App from './App';
 import { deployment, isDeploymentConfigured } from './contracts/contracts';
 import { createDemo, transitionDemo } from './demo/model';
-import { ArchitectureExplorer, Lifecycle, useReducedMotion, useReveal } from './PortfolioMotion';
-import { ProjectPreview, SimulationWorkspace } from './PortfolioStudio';
+import { useReducedMotion, useReveal } from './PortfolioMotion';
+import { SimulationWorkspace } from './PortfolioStudio';
 import './Portfolio.css';
+import TastePage from './TastePage';
 
 const copy = {
   en: {
@@ -58,7 +59,7 @@ export default function Portfolio() {
   const reducedMotion = useReducedMotion();
   const [motionPaused, setMotionPaused] = useState(false);
   const [language, setLanguage] = useState('en');
-  const [view, setView] = useState('overview');
+  const [view, setView] = useState(() => { const initial = new URLSearchParams(window.location.search).get('view'); return ['simulation', 'chain'].includes(initial) ? initial : 'overview'; });
   const [state, setState] = useState(createDemo);
   const [issueAmount, setIssueAmount] = useState('100');
   const [retireAmount, setRetireAmount] = useState('10');
@@ -74,7 +75,7 @@ export default function Portfolio() {
   const live = deployment.network === 'sepolia' && isDeploymentConfigured;
   const completed = [state.approved, state.issued > 0, state.retired > 0, queried && Boolean(result)];
   const clearFeedback = () => { setError(''); setMessage(''); };
-  const navigate = next => { clearFeedback(); setView(next); window.scrollTo({ top: 0, behavior: 'auto' }); };
+  const navigate = next => { clearFeedback(); setView(next); const url = new URL(window.location.href); if (next === 'overview') url.searchParams.delete('view'); else url.searchParams.set('view', next); window.history.replaceState(null, '', url); window.scrollTo({ top: 0, behavior: 'auto' }); };
   const act = action => {
     setFeedbackId(id => id + 1);
     try {
@@ -85,33 +86,19 @@ export default function Portfolio() {
       return true;
     } catch (e) { setError(e.message); setMessage(''); return false; }
   };
-  return <div ref={root} className="portfolio" data-motion-paused={motionPaused || reducedMotion} lang={language === 'zh' ? 'zh-CN' : 'en'}>
+  return <div ref={root} className="portfolio taste-portfolio" data-motion-paused={motionPaused || reducedMotion} lang={language === 'zh' ? 'zh-CN' : 'en'}>
     <nav className="portfolio-nav" aria-label={language === 'zh' ? '主导航' : 'Main navigation'}>
-      <button className="portfolio-brand" onClick={() => navigate('overview')}><span className="portfolio-brand-mark" aria-hidden="true">◎</span><span>CARBON / TRACE</span></button>
+      <button className="portfolio-brand" onClick={() => navigate('overview')}><span className="portfolio-brand-mark" aria-hidden="true">◎</span><span>Carbon Trace</span></button>
       <div>{['overview', 'simulation', 'chain'].map(key => <button key={key} aria-pressed={view === key} onClick={() => navigate(key)}>{c[key]}</button>)}<button className="portfolio-motion-toggle" disabled={reducedMotion} aria-pressed={motionPaused || reducedMotion} onClick={() => setMotionPaused(value => !value)}><span aria-hidden="true">{motionPaused || reducedMotion ? '▷' : 'Ⅱ'}</span> {reducedMotion ? c.reducedMotion : motionPaused ? c.resumeMotion : c.pauseMotion}</button><button onClick={() => setLanguage(language === 'en' ? 'zh' : 'en')}>{language === 'en' ? '中文' : 'English'}</button></div>
     </nav>
     {view === 'chain' ? <><div className="portfolio-chain-note" role="status">{live ? c.live : c.notLive}</div><App /></> : <main className="portfolio-main">
       {view === 'overview' ? <>
-        <section className="portfolio-hero">
-          <div className="portfolio-hero-copy"><p className="portfolio-eyebrow"><span className="portfolio-live-dot"/>{c.tag}</p><h1>{language === 'en' ? <><span>A clearer path</span>{' '}<span>from project to</span>{' '}<em>retirement.</em></> : <><span>从项目到核销，</span><em>让记录更清晰。</em></>}</h1><p className="portfolio-hero-intro">{c.intro}</p><div className="portfolio-actions"><button className="portfolio-primary" onClick={() => navigate('simulation')}>{c.simulation} <span aria-hidden="true">↗</span></button><a href="#lifecycle-title">{c.readMore} <span aria-hidden="true">↓</span></a></div><p className="portfolio-hero-caption">{c.fullDisclaimer}</p></div>
-          <ProjectPreview language={language} onDemo={() => navigate('simulation')}/>
-        </section>
-        <div className="portfolio-trust-strip"><span className="trust-strip-label">{language === 'zh' ? '为可检查的记录而构建' : 'BUILT FOR INSPECTABLE RECORDS'}</span><div><span>EVM COMPATIBLE</span><span>ERC-721 + ERC-20</span><span>{language === 'zh' ? '仅研究演示' : 'RESEARCH PROTOTYPE'}</span></div></div>
-        <section className="portfolio-evidence" aria-labelledby="evidence-title" data-reveal>
-          <div className="evidence-intro"><p className="portfolio-eyebrow">{language === 'zh' ? '研究证据 / 2026.10.27 验证记录' : 'RESEARCH EVIDENCE / VALIDATED 27 OCT 2026'}</p><h2 id="evidence-title">{language === 'zh' ? <>不止展示。<br/>也经得起检查。</> : <>Made to explore.<br/><em>Built to inspect.</em></>}</h2><a href="https://github.com/yehouwang-dev/carbon-credit/blob/main/docs/RELEASE-VALIDATION.md" target="_blank" rel="noreferrer">{language === 'zh' ? '查看测试与局限说明' : 'Read validation & limitations'} <span aria-hidden="true">↗</span></a></div>
-          <div className="evidence-stat"><strong>33<span> / 33</span></strong><h3>{language === 'zh' ? '合约测试通过' : 'Contract tests passing'}</h3><p>{language === 'zh' ? '发行额度、权限和核销等合约行为。' : 'Contract behavior, including caps, permissions and retirement.'}</p></div>
-          <div className="evidence-stat"><strong>5<span> / 5</span></strong><h3>{language === 'zh' ? '查询基础验收通过' : 'Query acceptance checks'}</h3><p>{language === 'zh' ? '另有 9 项查询与证书安全回归通过。' : 'Plus 9 passing query and certificate safety regressions.'}</p></div>
-        </section>
-        <section className="portfolio-features">{['noWallet', 'records', 'boundaries'].map((key, i) => <article key={key} data-reveal><span>0{i + 1} <span aria-hidden="true">↗</span></span><h2>{c[key]}</h2><p>{c[`${key}Text`]}</p></article>)}</section>
-        <Lifecycle language={language} onDemo={() => navigate('simulation')}/>
-        <section className="portfolio-question" data-reveal><p className="portfolio-eyebrow">{c.question}</p><h2>{c.questionText}</h2><span aria-hidden="true">↗</span></section>
-        <ArchitectureExplorer language={language} c={c}/>
-        <section className="portfolio-limitations" data-reveal><span className="portfolio-eyebrow">03 / HONEST BY DESIGN</span><h2>{c.limits}</h2><p>{c.limitsText}</p></section>
+        <TastePage language={language} c={c} onDemo={() => navigate('simulation')}/>
       </> : <>
         <SimulationWorkspace {...{ language, c, state, act, clearFeedback, issueAmount, setIssueAmount, retireAmount, setRetireAmount, beneficiary, setBeneficiary, query, setQuery, result, setResult, queried, setQueried, error, message, feedbackId, completed }} animate={!motionPaused && !reducedMotion}/>
 
       </>}
     </main>}
-    <footer className="portfolio-footer"><div><span className="footer-brand">◎ CARBON / TRACE</span><p>{language === 'zh' ? '碳信用追溯研究原型 · 无真实资产' : 'Carbon credit traceability · Research prototype · No real assets'}</p></div><div><a href="https://github.com/yehouwang-dev/carbon-credit" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a><p>{c.auth}</p><p className="portfolio-status">{live ? c.live : c.notLive}</p></div></footer>
+    <footer className="portfolio-footer"><div><span className="footer-brand">◎ Carbon Trace</span><p>{language === 'zh' ? '碳信用追溯研究原型 · 无真实资产' : 'Carbon credit traceability · Research prototype · No real assets'}</p></div><div><a href="https://github.com/yehouwang-dev/carbon-credit" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a><p>{c.auth}</p><p className="portfolio-status">{live ? c.live : c.notLive}</p></div></footer>
   </div>;
 }

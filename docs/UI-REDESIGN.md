@@ -1,3 +1,7 @@
+# Current design
+
+The 2026-11-04 Taste Skill refinement supersedes the November 1 presentation below: record-led hero, one Switzer type family, larger text, interactive model-backed lifecycle preview and an achromatic workspace. Fontshare CSS/font requests are now declared external assets. See [review and validation](TASTE-REVIEW.md).
+
 # 2026-11-01 interface redesign
 
 The portfolio now uses warm off-white surfaces, forest-green accents and an editorial hierarchy. The hero presents an explicitly fictional project card with a locally rendered SVG landscape, recorded limits and lifecycle labels. It is not a live map, a real project location or chain data.

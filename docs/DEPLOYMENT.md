@@ -4,6 +4,8 @@
 
 The 2026-11-01 visual release was built and promoted as `dpl_AtUVjHRaVuCoTsLJB7f5574wVdMX`. Anonymous public browser checks passed for the guided simulation, receipt queries and errors, reset, bilingual responsive layouts, architecture and motion preferences. Source and publication notes are synchronized to GitHub.
 
+The 2026-11-04 Taste Skill build is `dpl_12f3mQc3XTag6S1r2ePK4NQAFEVY`. It replaces the November 1 presentation, uses Switzer via the Fontshare font service, and retains wallet-free simulation and disabled unconfigured Sepolia interaction. See [the design review](TASTE-REVIEW.md).
+
 Public URL: [https://carbon-credit-seven.vercel.app/](https://carbon-credit-seven.vercel.app/).
 
 The `carbon-credit` project is deployed independently under the owner's `david-office` Vercel space. The existing `app` project was not modified. Anonymous HTTPS access, the architecture image, simulated lifecycle, bilingual/mobile layout, and disabled Sepolia interaction were checked after publication.
