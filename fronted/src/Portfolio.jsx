@@ -93,7 +93,7 @@ export default function Portfolio() {
     </nav>
     {view === 'chain' ? <><div className="portfolio-chain-note" role="status">{live ? c.live : c.notLive}</div><App /></> : <main className="portfolio-main">
       {view === 'overview' ? <>
-        <TastePage language={language} c={c} onDemo={() => navigate('simulation')}/>
+        <TastePage language={language} c={c} live={live} onDemo={() => navigate('simulation')}/>
       </> : <>
         <SimulationWorkspace {...{ language, c, state, act, clearFeedback, issueAmount, setIssueAmount, retireAmount, setRetireAmount, beneficiary, setBeneficiary, query, setQuery, result, setResult, queried, setQueried, error, message, feedbackId, completed }} animate={!motionPaused && !reducedMotion}/>
 

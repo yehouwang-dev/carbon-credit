@@ -1,0 +1,152 @@
+{
+  "status": "PASS",
+  "chainId": 11155111,
+  "verifiedAt": "2026-11-12T15:32:24.212Z",
+  "scope": "Independent read-only verification of real Sepolia transactions",
+  "contracts": {
+    "CarbonCredit": {
+      "address": "0x55907e1E7aE17d1cb1CEAd26d91C741e5Cf3f6c0",
+      "transaction": "0x634a989e43130a49c68da394fe9cd1fe4f0a274efbdd093928a820f527db964f",
+      "codeBytes": 7589,
+      "creationBytecodeMatches": true,
+      "owner": "0x8B14306459e4b022798fF44551cfE86faA3d7Bd4"
+    },
+    "CarbonCreditNFT": {
+      "address": "0x67D19a0Ac21445b5c673386Dd75a522f465dc5F7",
+      "transaction": "0x0dc58a3634a121534a2b0986834c4d1e174a2a648811a611817837a210634aa2",
+      "codeBytes": 19163,
+      "creationBytecodeMatches": true,
+      "owner": "0x8B14306459e4b022798fF44551cfE86faA3d7Bd4"
+    },
+    "CarbonMultiSig": {
+      "address": "0x994F65d40D78bf05ce99a57B476Ad5a9c6A54232",
+      "transaction": "0x307a37904c7f0216050cb64dfaa0dddaa02ecd47c31adbb8fed481da3d4e1098",
+      "codeBytes": 4227,
+      "creationBytecodeMatches": true,
+      "owner": "0x8B14306459e4b022798fF44551cfE86faA3d7Bd4"
+    },
+    "CarbonTimeLock": {
+      "address": "0x109964D76Af032ea5CC923C1611a38a20975ABb5",
+      "transaction": "0x958e0ca1d3c1c38b0aa80ab34465f04672c2a2ff6a7b12b05cac57c55cf627b9",
+      "codeBytes": 3648,
+      "creationBytecodeMatches": true,
+      "owner": "0x8B14306459e4b022798fF44551cfE86faA3d7Bd4"
+    },
+    "CarbonCreditVault": {
+      "address": "0x6e500Ca0702a57B4C02bE090C21891ded4Bf17Ac",
+      "transaction": "0xd84e05a64801ef385c92c33804236ea14704f86515ae11625bfdd4db40a8c7ba",
+      "codeBytes": 5650,
+      "creationBytecodeMatches": true,
+      "owner": "0x8B14306459e4b022798fF44551cfE86faA3d7Bd4"
+    },
+    "CarbonCreditTreasury": {
+      "address": "0x69Fe45DB0A35E1566c5E08B39410B466c2Fc0BB7",
+      "transaction": "0x2a390572fe47dd78caafc70275e76a59084a86fb814567e87fb99ad14422e106",
+      "codeBytes": 2957,
+      "creationBytecodeMatches": true,
+      "owner": "0x8B14306459e4b022798fF44551cfE86faA3d7Bd4"
+    }
+  },
+  "transactions": [
+    {
+      "label": "CarbonCredit",
+      "hash": "0x634a989e43130a49c68da394fe9cd1fe4f0a274efbdd093928a820f527db964f",
+      "blockNumber": 12119497,
+      "gasUsed": "12513345",
+      "feeWei": "12513345287806935"
+    },
+    {
+      "label": "CarbonCreditNFT",
+      "hash": "0x0dc58a3634a121534a2b0986834c4d1e174a2a648811a611817837a210634aa2",
+      "blockNumber": 12119633,
+      "gasUsed": "30301252",
+      "feeWei": "757531300"
+    },
+    {
+      "label": "CarbonMultiSig",
+      "hash": "0x307a37904c7f0216050cb64dfaa0dddaa02ecd47c31adbb8fed481da3d4e1098",
+      "blockNumber": 12119635,
+      "gasUsed": "7185798",
+      "feeWei": "179644950"
+    },
+    {
+      "label": "CarbonTimeLock",
+      "hash": "0x958e0ca1d3c1c38b0aa80ab34465f04672c2a2ff6a7b12b05cac57c55cf627b9",
+      "blockNumber": 12119693,
+      "gasUsed": "5958986",
+      "feeWei": "137056678"
+    },
+    {
+      "label": "CarbonCreditVault",
+      "hash": "0xd84e05a64801ef385c92c33804236ea14704f86515ae11625bfdd4db40a8c7ba",
+      "blockNumber": 12119724,
+      "gasUsed": "9395229",
+      "feeWei": "272461641"
+    },
+    {
+      "label": "CarbonCreditTreasury",
+      "hash": "0x2a390572fe47dd78caafc70275e76a59084a86fb814567e87fb99ad14422e106",
+      "blockNumber": 12119725,
+      "gasUsed": "5116627",
+      "feeWei": "148382183"
+    },
+    {
+      "label": "连接项目注册表",
+      "hash": "0xf5a56c32dbd7a982615129722448349217dcfd761371031db7f3cc7b72fe4a6a",
+      "blockNumber": 12119727,
+      "gasUsed": "129358",
+      "feeWei": "3880740"
+    },
+    {
+      "label": "提交虚构测试项目",
+      "hash": "0xf52d6f1db9c4773cc4527cf4d9114d83bd4a9dd4a3da6c9afeb21df339eafe26",
+      "blockNumber": 12119734,
+      "gasUsed": "1474478",
+      "feeWei": "44234340"
+    },
+    {
+      "label": "记录测试审核",
+      "hash": "0x38655c9acf82d68a0bc4511ce332ff65111f8f15b53eba7c668e0f58ca6e9434",
+      "blockNumber": 12119735,
+      "gasUsed": "2814744",
+      "feeWei": "84442320"
+    },
+    {
+      "label": "发行 100 CC",
+      "hash": "0xc6667bb272fcefdd3942a989c8ee6b9044441179a373566e122da21574341b18",
+      "blockNumber": 12119736,
+      "gasUsed": "486659",
+      "feeWei": "14599770"
+    },
+    {
+      "label": "核销 10 CC",
+      "hash": "0x08f34d3daf33c6516f7b4907b161ef8dbbb24353708ac6d472e4f32615bde1ec",
+      "blockNumber": 12119747,
+      "gasUsed": "1158953",
+      "feeWei": "35927543"
+    }
+  ],
+  "totalFeeWei": "12513346965968400",
+  "checks": [
+    "11 successful receipts",
+    "six creation transactions match compiled artifacts and constructor parameters",
+    "six contract bytecodes exist",
+    "owners, reviewer and issuer match test account",
+    "registry, vault and treasury correctly linked",
+    "fictional project active, reduction stored as tonnes x 100",
+    "100 issued, 10 retired, 90 balance, cap 0",
+    "certificate fields match",
+    "unknown certificate correctly rejected",
+    "total actual test fee below 0.02 ETH"
+  ],
+  "totalFeeETH": "0.0125133469659684",
+  "projectId": "1",
+  "certificateId": "0x25b2089edd6088d6b998f0f55eb0e203ffffb0dc6b7e780d90c3cf6b1b1323a0",
+  "result": {
+    "issuedCC": "100",
+    "retiredCC": "10",
+    "balanceCC": "90",
+    "remainingCapacityCC": "0",
+    "beneficiary": "Portfolio Demo"
+  }
+}

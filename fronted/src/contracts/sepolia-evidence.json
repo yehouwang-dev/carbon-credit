@@ -1,0 +1,14 @@
+{
+  "verifiedAt": "2026-11-12T15:32:24.212Z",
+  "chainId": 11155111,
+  "certificateId": "0x25b2089edd6088d6b998f0f55eb0e203ffffb0dc6b7e780d90c3cf6b1b1323a0",
+  "retirementTransaction": "0x08f34d3daf33c6516f7b4907b161ef8dbbb24353708ac6d472e4f32615bde1ec",
+  "result": {
+    "issuedCC": "100",
+    "retiredCC": "10",
+    "balanceCC": "90",
+    "remainingCapacityCC": "0",
+    "beneficiary": "Portfolio Demo"
+  },
+  "scope": "Sepolia testnet with fictional data, not environmental certification"
+}

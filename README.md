@@ -6,7 +6,7 @@ The 2026-11-04 Taste Skill refinement presents model-backed retirement records, 
 
 A research and portfolio prototype exploring carbon-credit lifecycle traceability on an EVM-compatible blockchain. It connects project applications, recorded issuance limits, and retirement certificates through contract state and events.
 
-> **Scope:** a research demonstration with fictional data—not a certified carbon registry, an audited financial product, or proof of real-world emission reductions. The public frontend is live; Sepolia contracts are not deployed/configured.
+> **Scope:** a research demonstration with fictional data—not a certified carbon registry, an audited financial product, or proof of real-world emission reductions. The public frontend is live; Sepolia contracts are deployed and independently checked. See [the 12 November deployment record](docs/SEPOLIA-DEPLOYMENT-20261112.md).
 
 **Live portfolio:** [carbon-credit-seven.vercel.app](https://carbon-credit-seven.vercel.app/) — browse without login or a wallet. Its interactive simulation runs only in the browser and does not create blockchain transactions.
 
@@ -150,11 +150,15 @@ Tests cover token caps/burns, project review permissions, linked issuance/retire
 - **Certificate authority:** downloaded HTML is editable. Contract queries verify recorded retirement, not real-world certification.
 - **No independent audit:** do not use with real assets or describe as production-ready.
 
-## Optional Sepolia rehearsal
+## Sepolia deployment
 
-The public frontend also includes a wallet-free portfolio and an explicitly labelled browser-only simulation. See [Vercel deployment and access checks](docs/DEPLOYMENT.md). This mode needs no live blockchain; actual Sepolia wallet actions remain separate and disabled until contracts are configured.
+The dedicated test-wallet deployment is complete: 11 confirmed transactions, 100 CC issued and 10 CC retired. See [addresses, evidence and limitations](docs/SEPOLIA-DEPLOYMENT-20261112.md). The instructions below describe a future fresh CLI rehearsal; the recorded deployment used MetaMask signing.
 
-Sepolia configuration is prepared, but no active deployment is asserted. Deployment broadcasts public test transactions; use a dedicated test-only wallet.
+### Optional fresh rehearsal
+
+The public frontend also includes a wallet-free portfolio and an explicitly labelled browser-only simulation. See [Vercel deployment and access checks](docs/DEPLOYMENT.md). This mode needs no live blockchain; Sepolia wallet actions remain separate from the browser simulation and use the verified address manifest.
+
+A fresh deployment broadcasts additional public test transactions; use a dedicated test-only wallet and preserve the existing manifest and transaction journal before starting a separate rehearsal.
 
 1. Create `hardhat-project/.env` from its `.env.example`; configure the wallet key and RPC. Keep `SEED_SEPOLIA_DEMO=false` unless intentionally publishing fictional fixtures.
 2. Run `npm --prefix hardhat-project run deploy:sepolia`. This writes the separate `fronted/src/contracts/deployment.sepolia.json`.
@@ -166,7 +170,7 @@ Never commit private keys, `.env` files, API secrets, or funded-wallet credentia
 
 ## Portfolio authorship
 
-See the [application material and contribution boundaries](docs/APPLICATION.md), [current validation report](docs/RELEASE-VALIDATION.md), and [MetaMask/Sepolia preparation guide](docs/SEPOLIA-WALLET.md). Current certificate-query acceptance is 5/5; the report separates local evidence from the still-pending public testnet deployment.
+See the [application material and contribution boundaries](docs/APPLICATION.md), [current validation report](docs/RELEASE-VALIDATION.md), and [MetaMask/Sepolia preparation guide](docs/SEPOLIA-WALLET.md). Current certificate-query acceptance is 5/5; the [Sepolia deployment record](docs/SEPOLIA-DEPLOYMENT-20261112.md) separates actual public testnet evidence from earlier local checks.
 
 This repository includes AI-assisted implementation and documentation. Applications should distinguish personal design decisions, code contributions, testing, and interpretation from AI assistance. This README does not assert unverified independent authorship or certification.
 

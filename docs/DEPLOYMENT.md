@@ -1,3 +1,13 @@
+# 2026-11-12 Sepolia integration release
+
+- 11 actual Sepolia transactions confirmed; six deployment payloads, owner/roles, registry/vault/treasury links and retirement fields independently checked.
+- 100 CC issued, 10 CC retired, 90 CC balance. Fictional project data, explicitly TEST ONLY / DEMO-NOT-CERTIFIED.
+- 19 frontend checks and production build pass. Local bilingual presentation and enabled wallet interface inspected; anonymous public HTTPS access and verification snapshot checked after publication.
+- Public URL: https://carbon-credit-seven.vercel.app/ . Production deployment `dpl_2PyaAggNAK2kPJ7ydgTGFt8e4nKv`, JS `index-DLIZAB6F.js`, CSS `index-3EGQOQHU.css`.
+- Actual total test fee: 0.0125133469659684 Sepolia ETH. See [addresses, transaction evidence and limitations](SEPOLIA-DEPLOYMENT-20261112.md).
+- Public [read-only verification snapshot](https://carbon-credit-seven.vercel.app/sepolia-chain-verification.json). Browser simulation remains separate from testnet actions.
+- GitHub source sync and explorer source verification were not performed in this task. Existing November 1/4 entries below are historical snapshots.
+
 # Public portfolio deployment
 
 ## Current deployment

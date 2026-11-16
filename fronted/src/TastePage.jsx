@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { createDemo, transitionDemo } from './demo/model';
 import { ArchitectureExplorer } from './PortfolioMotion';
 import './TastePage.css';
+import sepoliaEvidence from './contracts/sepolia-evidence.json';
 
 // Every displayed figure comes from the same model as the working simulator.
 const reviewed = transitionDemo(createDemo(), { type: 'approve' });
@@ -24,6 +25,9 @@ const words = {
     architecture: 'Inside the system', limitations: 'Trust has boundaries', boundaries: 'Review data and collateral values are administrator-managed. Fungible transfers do not preserve per-token project provenance. Multisig and timelock are separate prototypes.',
     question: 'What the records establish', answer: 'An approved project, a recorded issuance limit and a retirement can be linked and inspected. Real-world reductions still depend on evidence and trusted review.',
     pending: 'Sepolia contracts are not configured. Use the browser simulation to explore the project.',
+    deployed: 'Deployed on Ethereum Sepolia. The verified fictional walkthrough issued 100 CC and retired 10 CC, leaving 90 CC.',
+    chainEvidence: 'Inspect the Sepolia retirement transaction',
+    chainReport: 'Read the deployment verification snapshot',
   },
   zh: {
     title: <>碳信用记录，<br/>有据可查。</>, intro: '一个研究原型，关联项目审核、发行额度与核销记录。无需钱包，即可体验完整生命周期。',
@@ -39,6 +43,9 @@ const words = {
     architecture: '系统如何工作', limitations: '信任的边界', boundaries: '审核数据和抵押估值仍由管理员管理。同质化代币转账不保留逐枚项目来源。多签与时间锁仍是独立原型。',
     question: '记录能证明什么', answer: '可以关联并检查已审核项目、记录的发行额度与核销行为。现实中的减排真实性仍依赖证据和可信审核。',
     pending: 'Sepolia 合约尚未配置，可以先在浏览器中体验模拟流程。',
+    deployed: '已部署 Ethereum Sepolia。已核验的虚构演示发行 100 CC、核销 10 CC，余额 90 CC。',
+    chainEvidence: '查看 Sepolia 核销交易',
+    chainReport: '查看部署核验快照',
   },
 };
 
@@ -60,7 +67,7 @@ function StateFragment({ stage, t }) {
   </div>;
 }
 
-export default function TastePage({ language, c, onDemo }) {
+export default function TastePage({ language, c, onDemo, live = false }) {
   const t = words[language];
   const [stage, setStage] = useState(3);
   const selected = snapshots[stage];
@@ -82,6 +89,6 @@ export default function TastePage({ language, c, onDemo }) {
       <p className="taste-report-link"><span>{t.date} </span><a href="https://github.com/yehouwang-dev/carbon-credit/blob/main/docs/RELEASE-VALIDATION.md" target="_blank" rel="noreferrer">{t.report}</a></p>
     </section>
     <ArchitectureExplorer language={language} c={{...c,architecture:t.architecture}}/>
-    <section className="taste-boundaries" aria-labelledby="taste-boundaries-title"><div><h2 id="taste-boundaries-title" data-reveal>{t.limitations}</h2><p data-reveal>{t.boundaries}</p></div><div><h3 data-reveal>{t.question}</h3><p data-reveal>{t.answer}</p><p className="taste-caption">{t.pending}</p></div></section>
+    <section className="taste-boundaries" aria-labelledby="taste-boundaries-title"><div><h2 id="taste-boundaries-title" data-reveal>{t.limitations}</h2><p data-reveal>{t.boundaries}</p></div><div><h3 data-reveal>{t.question}</h3><p data-reveal>{t.answer}</p><p className="taste-caption">{live ? t.deployed : t.pending}</p>{live && <><p><a href={`https://sepolia.etherscan.io/tx/${sepoliaEvidence.retirementTransaction}`} target="_blank" rel="noreferrer">{t.chainEvidence} ↗</a></p><p><a href="/sepolia-chain-verification.json" target="_blank" rel="noreferrer">{t.chainReport} ↗</a></p></>}</div></section>
   </div>;
 }

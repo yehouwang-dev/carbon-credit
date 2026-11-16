@@ -1,15 +1,15 @@
 {
   "chainId": 11155111,
   "network": "sepolia",
-  "deployedAt": "",
-  "deploymentBlock": 0,
-  "deployer": "",
+  "deployedAt": "2026-11-12T14:39:58.050Z",
+  "deploymentBlock": 12119497,
+  "deployer": "0x8B14306459e4b022798fF44551cfE86faA3d7Bd4",
   "contracts": {
-    "CarbonCredit": "",
-    "CarbonCreditNFT": "",
-    "CarbonMultiSig": "",
-    "CarbonTimeLock": "",
-    "CarbonCreditVault": "",
-    "CarbonCreditTreasury": ""
+    "CarbonCredit": "0x55907e1E7aE17d1cb1CEAd26d91C741e5Cf3f6c0",
+    "CarbonCreditNFT": "0x67D19a0Ac21445b5c673386Dd75a522f465dc5F7",
+    "CarbonMultiSig": "0x994F65d40D78bf05ce99a57B476Ad5a9c6A54232",
+    "CarbonTimeLock": "0x109964D76Af032ea5CC923C1611a38a20975ABb5",
+    "CarbonCreditVault": "0x6e500Ca0702a57B4C02bE090C21891ded4Bf17Ac",
+    "CarbonCreditTreasury": "0x69Fe45DB0A35E1566c5E08B39410B466c2Fc0BB7"
   }
 }
