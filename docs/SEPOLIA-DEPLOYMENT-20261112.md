@@ -26,4 +26,4 @@ Frontend integration: the verified manifest and bilingual deployment/evidence li
 
 ## Website publication
 
-Published to https://carbon-credit-seven.vercel.app/ as `dpl_2PyaAggNAK2kPJ7ydgTGFt8e4nKv`. Anonymous index, compiled address configuration and public verification snapshot pass. Local bilingual checks pass. GitHub source sync and explorer source verification were not performed in this task.
+Published to https://carbon-credit-seven.vercel.app/ as `dpl_2PyaAggNAK2kPJ7ydgTGFt8e4nKv`. Anonymous index, compiled address configuration and public verification snapshot pass. Local bilingual checks pass. Follow-up on 2026-11-16: source synced to GitHub (`yehouwang-dev/carbon-credit`, `main`) and all 6 contracts verified on Sepolia Etherscan (`verify:sepolia`).

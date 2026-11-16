@@ -4,7 +4,7 @@
 
 Carbon Credit Platform is an AI-assisted research prototype exploring the relationship between project review, recorded issuance limits, and credit retirement. Project NFTs store application and review records, while an ERC-20 contract supports project-associated issuance and retirement queries. A bilingual interface provides a clearly labelled, wallet-free simulation alongside a separate blockchain interface.
 
-The current validation includes 33 smart-contract tests, five certificate-query acceptance tasks, nine additional query/security regressions, and browser checks of the simulated workflow. A local Hardhat transaction flow has also been exercised. The public Sepolia deployment is not yet completed. The prototype does not certify real-world reductions, preserve per-token project provenance, or claim integrated multisig administration.
+The current validation includes 33 smart-contract tests, five certificate-query acceptance tasks, nine additional query/security regressions, and browser checks of the simulated workflow. A local Hardhat transaction flow has also been exercised, and the six contracts are deployed and source-verified on Sepolia (with 100 CC issued and 10 CC retired in a public testnet run) alongside a live Vercel portfolio deployment. The prototype does not certify real-world reductions, preserve per-token project provenance, or claim integrated multisig administration.
 
 ## 个人贡献与 AI 辅助：如实填写
 
@@ -31,6 +31,6 @@ The current validation includes 33 smart-contract tests, five certificate-query 
 
 时间路线：00:00 项目问题；00:12 四阶段流程；00:26 架构与治理边界；00:40 模拟声明；00:50 审核；01:02 发行100；01:15 核销10；01:28 查询记录；01:41 无结果；01:50 重置与贡献说明。
 
-视频文件当前仅在本机，不应在尚未上传时声称有公开视频链接。真实 Sepolia 闭环完成后，可另录带可核验浏览器链接的版本。
+视频文件当前仅在本机，不应在尚未上传时声称有公开视频链接。Sepolia 真实闭环与 6 个合约源码验证已完成，如需更新演示视频，可另录带可核验浏览器链接的版本。
 
 已有 Playwright/Chrome 环境时，用 `node scripts/record-demo.cjs` 可从本机18082预览重录；也可通过 `DEMO_URL` 指定本机展示地址。无需为项目新增视频运行时依赖。

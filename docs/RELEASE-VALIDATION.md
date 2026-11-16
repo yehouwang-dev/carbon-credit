@@ -6,7 +6,7 @@
 - Public URL: https://carbon-credit-seven.vercel.app/ . Production deployment `dpl_2PyaAggNAK2kPJ7ydgTGFt8e4nKv`, JS `index-DLIZAB6F.js`, CSS `index-3EGQOQHU.css`.
 - Actual total test fee: 0.0125133469659684 Sepolia ETH. See [addresses, transaction evidence and limitations](SEPOLIA-DEPLOYMENT-20261112.md).
 - Public [read-only verification snapshot](https://carbon-credit-seven.vercel.app/sepolia-chain-verification.json). Browser simulation remains separate from testnet actions.
-- GitHub source sync and explorer source verification were not performed in this task. Existing November 1/4 entries below are historical snapshots.
+- Follow-up (2026-11-16): source synced to `yehouwang-dev/carbon-credit` (`main`), and all 6 Sepolia contracts passed Etherscan source verification via `npm --prefix hardhat-project run verify:sepolia`. Existing November 1/4 entries below are historical snapshots.
 
 # 2026-11-04 Taste Skill refinement
 
